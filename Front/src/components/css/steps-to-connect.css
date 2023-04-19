@@ -1,0 +1,71 @@
+.block-list{
+    padding: 0px;
+    padding-left: 50px;
+    padding-top: 20px;
+    width: 100%;
+    background-color: #efefef;
+    height: 80vh;
+}
+
+.block{
+    border-radius: 30px;
+    background-color: #ffffff;
+    width: 80%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+}
+
+.block-token{
+    border-radius: 30px;
+    background-color: #ffffff;
+    width: 80%;
+    margin-bottom: 20px;
+    display: block;
+    align-items: start;
+    height: 100px;
+}
+
+.block-token div{
+    padding: 5px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+}
+
+.block-token input{
+
+}
+
+.block-token button{
+    padding: 15px 30px;
+    width: 250px;
+    border-radius: 15px;
+    border: none;
+    background-color: #efefef;
+    margin: 20px;
+}
+
+.block p{
+    padding: 15px 30px;
+    margin: 0px;
+}
+
+.block-token p{
+    padding: 15px 30px;
+    padding-bottom: 5px;
+    margin: 0px;
+}
+
+.block button{
+    padding: 15px 30px;
+    width: 250px;
+    border-radius: 15px;
+    border: none;
+    background-color: #efefef;
+    margin: 20px;
+}

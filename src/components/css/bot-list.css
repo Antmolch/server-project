@@ -1,0 +1,71 @@
+  .bot-list{
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    margin-left: 5%;
+  }
+  
+  .header-bot-list{
+    padding-top: 2%;
+    margin: 0px;
+    display: flex;
+    margin-bottom: 3%;
+    justify-content: space-between;
+    align-items: center;
+    width: 89%;
+  }
+  
+  .add-bot-field{
+    margin: 0px;
+    padding: 0px;
+    width: auto;
+    justify-content: right;
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-bot-list p, input, button{
+    margin: 0px;
+    margin-right: 5%;
+    border-radius: 3px;
+  }
+  .header-bot-list button{
+    display: inline-flex;
+    text-align: center;
+    background-color: #FF941A;
+    width: 150px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0px;
+  }
+  .header-bot-list button img{
+    width: 15%;
+    height: 15%;
+  }
+  .header-bot-list button p{
+    vertical-align: center;
+    color: #ffffff;
+  }
+  .header-bot-list p{
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+    width: 150px;
+  }
+  .header-bot-list input{
+    border: 1px solid #393330;
+    text-align: left;
+    outline: none;
+    width: 300px
+  }
+
+.bot-list-field{
+    background-color: #EFEFEF;
+    margin: 0px;
+    width: 100%;
+    min-height: 100%;
+    border-radius: 50px 50px 0px 0px;
+
+  }

@@ -1,0 +1,34 @@
+
+
+.inputData{
+    background-color: #ffffff;
+    color: rgb(255, 255, 255);
+    border: 1px solid #939393;
+    width: 50%;
+    border-radius: 5px;
+    text-align: left;
+    padding: 10px;
+}
+.button{
+    /* padding: 10px 20px; */
+    background-color: #FF941A;
+    border: 1px solid #FF941A;
+    border-radius: 4px;
+    /* margin: 0 10px; */
+    cursor: pointer;
+    width: 15%;
+    font-family: 'Formular';
+    font-size: medium;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.settings{
+    padding-left: 5%;
+    padding-top: 1%;
+    font-family: 'Formular';
+    background-color: #efefef;
+    height: 80vh;
+    margin: 0px;
+}
+.inputForm{
+    padding: 10px;
+}

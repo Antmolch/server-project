@@ -1,0 +1,109 @@
+.start-page{
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+footer{
+    background: #393330;
+    color: #F2F2F2;
+    /* display: inline-block; */
+    width: 100%;
+    height: 20vh;
+    margin: 0px;
+    padding: 0px;
+    padding-top: 10px;
+    padding-left: 30px;
+    bottom: 0;
+    display: none;
+ }
+.footer-menu{
+    padding-left: 1%;
+}
+ .middle-menu{
+    align-items: center;
+    padding-left: 10%;
+    display: flex;
+    justify-content: left;
+    font-family: 'Formular';
+    margin: 0px;
+    height: 75vh;
+    border-radius: 0px 0px 200px 0px;
+    background-color: #efefef;
+ }
+ .text{
+    margin: 1%;
+ }
+ .icon{
+    /* align-items: right; */
+
+ }
+ .middle-text{
+    width: 35%;
+    margin: 1%;
+    padding: 0px;
+    text-align: left;
+   
+ }
+ button.button{
+    /* padding: 10px 20px; */
+    background-color: #FF941A;
+    border: 1px solid #FF941A;
+    border-radius: 8px;
+    /* margin: 0 10px; */
+    cursor: pointer;
+    width: auto;
+    font-family: 'Formular';
+    font-size: 30px;
+    color: azure;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.button-reg{
+    background-color: #FF941A;
+    border: 1px solid #FF941A;
+    border-radius: 5px;
+    /* margin: 0 10px; */
+    cursor: pointer;
+    width: auto;
+    height: 30px;
+    font-family: 'Formular';
+    font-size: 15px;
+    color: azure;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    vertical-align: middle;
+    text-align: center;
+}
+.button-log{
+    background-color: #ffffff00;
+    border: 1px solid #ffffff00;
+    border-radius: 5px;
+    /* margin: 0 10px; */
+    cursor: pointer;
+    width: auto;
+    height: 30px;
+    font-family: 'Formular';
+    font-size: 15px;
+    margin-right: 15px;
+    color: rgb(16, 16, 16);
+    vertical-align: middle;
+    text-align: center;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+.header-start{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    font-family: 'Formular';
+    font-size: large;
+    padding: 0px;
+    padding-left: 25px;
+    padding-right: 25px;
+    height: 20vh;
+}
+.header-start.button-container{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
