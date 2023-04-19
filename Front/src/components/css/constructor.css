@@ -72,7 +72,7 @@
   .bot-block{
     width: 100%;
     margin: 0px;
-    display: inline-flex;
+    display: block;
     margin: 0px;
     margin-right: 20px;
   }
@@ -80,13 +80,13 @@
   .block{
     width: auto;
     margin: 0px;
-    display: inline-block;
+    display: block;
     
   }
 
   .inline-bot-block{
     width: auto;
-    display:inline-flex;
+    display: block;
     margin: 0px;
   }
 
