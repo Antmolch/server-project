@@ -78,3 +78,55 @@
     font-family: 'Formular';
 }
 
+.modal_loaded{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
+    visibility: hidden;
+    z-index: 10;
+    
+}
+
+.modal_loaded.active{
+    opacity: 1;
+    pointer-events: all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: visible;
+}
+
+.loader{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: spin 1s linear infinite;
+}
+
+.loader img{
+    width: 50px;
+    height: 50px;
+}
+
+@keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+

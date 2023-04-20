@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 
+import loadIcon from './img/loading-svgrepo-com.svg'
 import logo from './img/Vector.svg'
+
 
 import './css/modal.css'
 class ModalAuthorization extends Component {
@@ -12,6 +15,8 @@ class ModalAuthorization extends Component {
           email: '',
           password: '',
           confirmPassword: '',
+          isLoaded: false,
+          error: ''
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -29,7 +34,31 @@ class ModalAuthorization extends Component {
       };
 
       userAuthorization = () => {
-        this.props.onAuthorization(this.state.name, this.state.email, this.state.password);
+        this.setState({isLoaded: true});
+        console.log(this.state.isLoaded)
+        axios({
+          method: 'post',
+          url: 'http://127.0.0.1:8000/api/login',
+          data: {
+            email: this.state.email,
+            password: this.state.password
+          }
+        }).then((res) => {
+          this.setState({
+            isLoaded: false
+          })
+          console.log(this.state.isLoaded)
+          this.props.onAuthorization(res.email, res.password)
+
+          console.log(res.data)
+        })
+        .catch(err => {
+          this.setState({
+            isLoaded: false,
+            error: 'Неправльный логин или пороль'
+          })
+          console.log(err.response.data.email[0])
+        })
       }
 
       render() {
@@ -37,6 +66,7 @@ class ModalAuthorization extends Component {
         return (
             <div className={this.props.showModal ? "modal active" : "modal"} onClick={()=> this.props.onCloseModal()}>
             <div className={this.props.showModal ? "modal__content active" : "modal__content"} onClick={e=>e.stopPropagation()}>
+              
               <img src={logo} className='size__logo'/>
               <h3 style={{paddingLeft:'40px'}}>Авторизуйтесь</h3>
               <form onSubmit={this.handleSubmit} className='input__form'>
@@ -61,13 +91,20 @@ class ModalAuthorization extends Component {
                     onChange={this.handleInputChange}
                   />
                 {/* <button onClick={ ()=> this.props.onOpenModal()}>sfvd</button> */}
-                
+                <p style={{display: 'flex',width: '340px', height: '30px', margin: '0px', marginBottom: '10px', justifyContent: 'center', alignItems: 'center', color: 'red'}}>{this.state.error}</p>
                 <button type="submit" className='button' style={{fontSize: '20px', width: '80%'}}  onClick={() => this.userAuthorization()}>Войти</button>
                 <br/>
                 <br/>
-                <p style={{display: 'flex',width: '340px',margin: '0px', justifyContent: 'space-between', alignItems: 'center'}}>Нет аккаунта? <p style={{cursor: 'pointer', color: 'orange'}} onClick={ ()=> this.props.onOpenModal()}>Зарегестрируйтесь</p></p>
+                <div style={{display: 'flex',width: '340px',margin: '0px', justifyContent: 'space-between', alignItems: 'center'}}><p>Нет аккаунта?</p><p style={{cursor: 'pointer', color: 'orange'}} onClick={ ()=> this.props.onOpenModal()}>Зарегестрируйтесь</p></div>
               </form>
             </div>
+            {this.state.isLoaded &&
+              <div className={this.state.isLoaded ? "modal_loaded active" : "modal_loaded"}>
+                <div className='loader'>
+                  <img src={loadIcon} alt='Loader'/>
+                </div>
+              </div>
+            }
           </div>
         );
       }
