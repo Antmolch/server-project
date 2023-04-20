@@ -11,6 +11,20 @@ import Settings from './components/Settings';
 import StepsToConnect from './components/StepsToConnect';
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.withCredentials = true;
+
+const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'JWT fefege...'
+}
+
+const client = axios.create({
+  baseURL: "http://127.0.0.1:8000"
+});
+
 class App extends React.Component{
   constructor(props){
     super(props);
@@ -265,7 +279,7 @@ class App extends React.Component{
     this.onDeleteBot = this.onDeleteBot.bind(this);
   }
 
-  getBots = () => {
+  getBots = () => {/*
     axios.create({
       baseURL: "http://127.0.0.1:8000/auth/",
       headers: {"Access-Control-Allow-Origin": "*"},
@@ -275,7 +289,7 @@ class App extends React.Component{
     })
     
     axios.get({url: "http://127.0.0.1:8000/auth/", headers: 'Access-Control-Allow-Origin'}).then(data => console.log(data))
-    .catch(err => console.log(err))
+    .catch(err => console.log(err))*/
   }
 
   onChangeBot(id){
@@ -329,13 +343,37 @@ class App extends React.Component{
     })
   }
   
-  userAuthorization = (name, email, token) => {
+  userAuthorization = (name, em, pass) => {
+    axios({
+      method: 'post',
+      url: 'http://127.0.0.1:8000/api/login',
+      data: {
+        email: 'mail@mail.ru',
+        password: 'examplepass'
+      },
+      config: {
+        headers: { 'Access-Control-Allow-Headers': '*',
+                    "Content-Type": "application/json" 
+        }
+      }
+
+    }).then((res) => console.log(res.data))
+    /*axios.post('http://127.0.0.1:8000/api/login', {
+      params: {
+        email: 'em',
+        password: 'pass'
+        },
+      headers: {
+          'Access-Control-Allow-Headers': '*',
+          'Content-Type': 'application/json'
+        }
+      }
+    ).catch(err => console.log(err))*/
     this.setState({
       status: "bot-list",
       user: {
         name: name,
-        email: email,
-        token: token
+        email: em
       }
     })
     this.getBots();

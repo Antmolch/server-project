@@ -29,7 +29,7 @@ class ModalAuthorization extends Component {
       };
 
       userAuthorization = () => {
-        this.props.onAuthorization(this.state.name, this.state.email, '1212121');
+        this.props.onAuthorization(this.state.name, this.state.email, this.state.password);
       }
 
       render() {
