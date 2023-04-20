@@ -1,16 +1,14 @@
 .block-list{
-    padding: 0px;
-    padding-left: 50px;
-    padding-top: 20px;
+    padding: 20px 200px;
     width: 100%;
     background-color: #efefef;
     height: 80vh;
 }
 
-.block{
-    border-radius: 30px;
+.block-settings{
+    border-radius: 20px;
     background-color: #ffffff;
-    width: 80%;
+    width: calc(100% - 400px);
     margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
@@ -21,24 +19,29 @@
 .block-token{
     border-radius: 30px;
     background-color: #ffffff;
-    width: 80%;
+    width: calc(100% - 400px);
     margin-bottom: 20px;
     display: block;
     align-items: start;
-    height: 100px;
+    height: 110px;
 }
 
 .block-token div{
     padding: 5px 30px;
+    padding-right: 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 50px;
-    width: 100%;
+    margin: 0px;
+    width: calc(100% - 50px);
 }
 
 .block-token input{
-
+    border: 2px solid #AFAFAF;
+    border-radius: 5px;
+    width: 40%;
+    height: 30px;
 }
 
 .block-token button{
@@ -46,11 +49,12 @@
     width: 250px;
     border-radius: 15px;
     border: none;
-    background-color: #efefef;
-    margin: 20px;
+    background-color: #FF941A;
+    margin: 0px;
+    color: white;
 }
 
-.block p{
+.block-settings p{
     padding: 15px 30px;
     margin: 0px;
 }
@@ -61,7 +65,7 @@
     margin: 0px;
 }
 
-.block button{
+.block-settings button{
     padding: 15px 30px;
     width: 250px;
     border-radius: 15px;

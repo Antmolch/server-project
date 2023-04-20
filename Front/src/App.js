@@ -9,7 +9,7 @@ import StartPage from './components/StartPage';
 import Header from './components/Header'
 import Settings from './components/Settings';
 import StepsToConnect from './components/StepsToConnect';
-
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 class App extends React.Component{
   constructor(props){
@@ -265,6 +265,19 @@ class App extends React.Component{
     this.onDeleteBot = this.onDeleteBot.bind(this);
   }
 
+  getBots = () => {
+    axios.create({
+      baseURL: "http://127.0.0.1:8000/auth/",
+      headers: {"Access-Control-Allow-Origin": "*"},
+      headers: {"Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"},
+      headers: {"Content-Type": "application/json"},
+      withCredentials: true
+    })
+    
+    axios.get({url: "http://127.0.0.1:8000/auth/", headers: 'Access-Control-Allow-Origin'}).then(data => console.log(data))
+    .catch(err => console.log(err))
+  }
+
   onChangeBot(id){
     this.setState({ 
       status: "constructor",
@@ -325,6 +338,8 @@ class App extends React.Component{
         token: token
       }
     })
+    this.getBots();
+    console.log(this.state.bots)
   }
 
   ChangeBot = (bot) => {

@@ -86,7 +86,7 @@
 
   .inline-bot-block{
     width: auto;
-    display: block;
+    display: flex;
     margin: 0px;
   }
 
@@ -99,6 +99,7 @@
     padding: 5px 10px;
     margin-bottom: 5px;
   }
+
 
   .message-field div{
     display: flex;

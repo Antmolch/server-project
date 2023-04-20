@@ -12,18 +12,18 @@ class StepsToConnect extends Component {
             
             
             <h2 className='text-2'>3 шага для подключения бота:</h2><br/>
-            <div className='block text-3'>
+            <div className='block-settings text-3'>
                 <p>1. Откройте аккаунт @botfather</p>
                 <button>Открыть @botfather</button>
             </div>
             
-            <div className='block text-3'>
+            <div className='block-settings text-3'>
                 <p>2. Отправьте команду /newbot и следуйте указаниям</p>
                 <button>Скопировать /newbot</button>
             </div>
             
             <div className='block-token text-3'>
-                <p>3. Бот пришлет токен. Скопируйте его и вставьте его:</p>
+                <p>3. Бот пришлет токен. Скопируйте и вставьте его:</p>
                 <div>
                     <input placeholder="Например 54656526165165" className='input'/>
                     <button>Подключить бота</button>
