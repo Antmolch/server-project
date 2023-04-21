@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import axios from 'axios'
 
 import loadIcon from './img/loading-svgrepo-com.svg'
@@ -16,12 +16,16 @@ class ModalAuthorization extends Component {
           password: '',
           confirmPassword: '',
           isLoaded: false,
-          error: ''
+          error: '',
+          incor_email: false,
+          incor_pass: false
+
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
       }
-      
+
+
       handleInputChange = (event) => {
         const { name, value } = event.target;
         this.setState({ [name]: value });
@@ -34,37 +38,60 @@ class ModalAuthorization extends Component {
       };
 
       userAuthorization = () => {
-        this.setState({isLoaded: true});
-        console.log(this.state.isLoaded)
-        axios({
-          method: 'post',
-          url: 'http://127.0.0.1:8000/api/login',
-          data: {
-            email: this.state.email,
-            password: this.state.password
-          }
-        }).then((res) => {
+        if (this.state.email === ''){
+          this.deleteError()
           this.setState({
-            isLoaded: false
+            incor_email: true
           })
-          console.log(this.state.isLoaded)
-          this.props.onAuthorization(res.email, res.password)
+        }else if (this.state.password === ''){
+          this.deleteError()
+          this.setState({
+            incor_pass: true
+          })
+        }else{
+          this.setState({isLoaded: true});
+          axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/login',
+            data: {
+              email: this.state.email,
+              password: this.state.password
+            }
+          }).then((res) => {
+            this.setState({
+              isLoaded: false
+            })
+            this.props.onAuthorization(res.data.email, res.data.password)
+          })
+          .catch(err => {
+            this.deleteError()
+            this.setState({
+              isLoaded: false,
+              error: 'Неправльный логин или пороль'
+            })
+          })
+        }
+        
+      }
 
-          console.log(res.data)
-        })
-        .catch(err => {
-          this.setState({
-            isLoaded: false,
-            error: 'Неправльный логин или пороль'
-          })
-          console.log(err.response.data.email[0])
+      deleteError = () => {
+        this.setState({
+          error: '',
+          incor_pass: false,
+          incor_email: false
         })
       }
+
 
       render() {
         const { onClose } = this.props;
         return (
-            <div className={this.props.showModal ? "modal active" : "modal"} onClick={()=> this.props.onCloseModal()}>
+            <div className={this.props.showModal ? "modal active" : "modal"} onClick={()=> 
+              this.setState({
+                error: '',
+                incor_pass: false,
+                incor_email: false
+              }, this.props.onCloseModal())}>
             <div className={this.props.showModal ? "modal__content active" : "modal__content"} onClick={e=>e.stopPropagation()}>
               
               <img src={logo} className='size__logo'/>
@@ -81,6 +108,10 @@ class ModalAuthorization extends Component {
                     onChange={this.handleInputChange}
                   />
                 
+                <p className='text-4' 
+                  style={{display: 'flex',width: '340px', height: '15px', margin: '0px', marginBottom: '5px', justifyContent: 'center', alignItems: 'center', color: 'red'}}>
+                  {this.state.incor_email && 'Заполните поле'}
+                </p>
                   
                   <input
                     type="password"
@@ -91,7 +122,11 @@ class ModalAuthorization extends Component {
                     onChange={this.handleInputChange}
                   />
                 {/* <button onClick={ ()=> this.props.onOpenModal()}>sfvd</button> */}
-                <p style={{display: 'flex',width: '340px', height: '30px', margin: '0px', marginBottom: '10px', justifyContent: 'center', alignItems: 'center', color: 'red'}}>{this.state.error}</p>
+                <p className='text-4' 
+                  style={{display: 'flex',width: '340px', height: '15px', margin: '0px', marginBottom: '5px', justifyContent: 'center', alignItems: 'center', color: 'red'}}>
+                  {this.state.incor_pass && 'Заполните поле'}
+                  {this.state.error}
+                </p>
                 <button type="submit" className='button' style={{fontSize: '20px', width: '80%'}}  onClick={() => this.userAuthorization()}>Войти</button>
                 <br/>
                 <br/>

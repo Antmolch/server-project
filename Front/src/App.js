@@ -343,8 +343,8 @@ class App extends React.Component{
     })
   }
   
-  userAuthorization = (name, em, pass) => {
-    axios({
+  userAuthorization = (em, name, pass) => {
+    /*axios({
       method: 'post',
       url: 'http://127.0.0.1:8000/api/login',
       data: {
@@ -357,7 +357,7 @@ class App extends React.Component{
         }
       }
 
-    }).then((res) => console.log(res.data))
+    }).then((res) => console.log(res.data))*/
     /*axios.post('http://127.0.0.1:8000/api/login', {
       params: {
         email: 'em',
