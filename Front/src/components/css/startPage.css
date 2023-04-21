@@ -30,6 +30,9 @@ footer{
     height: 75vh;
     border-radius: 0px 0px 200px 0px;
     background-color: #efefef;
+    -webkit-box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.5);
  }
  .text{
     margin: 1%;
@@ -45,19 +48,6 @@ footer{
     text-align: left;
    
  }
- button.button{
-    /* padding: 10px 20px; */
-    background-color: #FF941A;
-    border: 1px solid #FF941A;
-    border-radius: 8px;
-    /* margin: 0 10px; */
-    cursor: pointer;
-    width: auto;
-    font-family: 'Formular';
-    font-size: 30px;
-    color: azure;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 .button-reg{
     background-color: #FF941A;
     border: 1px solid #FF941A;
@@ -72,6 +62,15 @@ footer{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     vertical-align: middle;
     text-align: center;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.button-reg p{
+    padding: 0px;
+    margin: 0px;
+    padding: 15px 10px;
 }
 .button-log{
     background-color: #ffffff00;
@@ -94,7 +93,7 @@ footer{
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #ffffff;
+    background-color: #efefef;
     font-family: 'Formular';
     font-size: large;
     padding: 0px;

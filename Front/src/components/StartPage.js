@@ -58,7 +58,7 @@ class StartPage extends Component {
                     <h1>Чат-бот в Telegram</h1>
                     <p>Создайте бота своими руками в одном из самых популярных мессенджеров за несколько минут</p>
                     <br/>
-                    <button className='button' onClick={this.handleOpenModalRegistration}>Создать бота</button>
+                    <button className='button-reg' onClick={this.handleOpenModalRegistration}><p>Создать бота</p></button>
                 </div>
                 
                 <img className='icon' src={telegramIcon}/>

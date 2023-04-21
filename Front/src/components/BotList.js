@@ -48,7 +48,7 @@ class BotList extends React.Component{
                             </button>
                         </div>
                     </div>
-                    {this.bots.map((el) => (<div key={el.id} style={{margin: "0px", width: "100%"}}> 
+                    {this.bots.map((el) => (<div className='bot-field' key={el.id}> 
                         <Bot onDelete={this.onDelete} onClickStatus={this.onClickStatus} onClickBot={this.onClickBot} bot={el} number={this.bots.indexOf(el) + 1}/>
                     </div>))}
                 </div>

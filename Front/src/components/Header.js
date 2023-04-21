@@ -34,7 +34,7 @@ class Header extends Component {
                   Войти
               </button>
               <button className='button-reg' onClick={() => this.props.onRegistration()}>
-                  Зарегестрироваться
+                  <p>Зарегестрироваться</p>
               </button>
           </div>
       </header>

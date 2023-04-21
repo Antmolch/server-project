@@ -9,21 +9,14 @@ import StartPage from './components/StartPage';
 import Header from './components/Header'
 import Settings from './components/Settings';
 import StepsToConnect from './components/StepsToConnect';
+import loadIcon from './components/img/loading-svgrepo-com.svg'
+import './components/css/modal.css'
+
+
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-
-
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
-
-const headers = {
-  'Content-Type': 'application/json',
-  'Authorization': 'JWT fefege...'
-}
-
-const client = axios.create({
-  baseURL: "http://127.0.0.1:8000"
-});
 
 class App extends React.Component{
   constructor(props){
@@ -272,24 +265,38 @@ class App extends React.Component{
         email: '',
         token: ''
       },
-      bot_name: ''
+      bot_name: '',
+      isLoaded: false,
+      error: ''
     }
     this.onChangeBot = this.onChangeBot.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onDeleteBot = this.onDeleteBot.bind(this);
   }
 
-  getBots = () => {/*
-    axios.create({
-      baseURL: "http://127.0.0.1:8000/auth/",
-      headers: {"Access-Control-Allow-Origin": "*"},
-      headers: {"Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"},
-      headers: {"Content-Type": "application/json"},
-      withCredentials: true
+  getBots = () => {
+    this.setState({
+      isLoaded: true
     })
-    
-    axios.get({url: "http://127.0.0.1:8000/auth/", headers: 'Access-Control-Allow-Origin'}).then(data => console.log(data))
-    .catch(err => console.log(err))*/
+    axios({
+      method: 'post',
+      url: 'http://127.0.0.1:8000/api/bots',
+      data: {
+        email: this.state.email
+      }
+    }).then((res) => {
+      console.log(res)
+      this.setState({
+        isLoaded: false,
+        bots: res.data
+      })
+    })
+    .catch(err => {
+      this.setState({
+        isLoaded: false,
+        error: 'Неправльный логин или пороль'
+      })
+    })
   }
 
   onChangeBot(id){
@@ -420,7 +427,6 @@ class App extends React.Component{
             onChangePage={this.ChangePage}
             />
           <div className="bot-constructor">
-        
             <FunctionsBlock onChangeButton={this.onChangeButton} />
             <Constructor 
               onChangeBot={this.ChangeBot} 
@@ -440,12 +446,18 @@ class App extends React.Component{
             onUserSettings={this.userSettings}
             />
           <div className="bot-list-field">
-            <BotList 
-              onDeleteBot={this.onDeleteBot} 
-              onChangeStatus={this.onChangeStatus} 
-              onClickBot={this.onChangeBot} 
-              onCreateBot={this.onCreateBot}
-              bots={this.state.bots}/>
+            {this.state.isLoaded ? 
+              <div className='load-bots'>
+                <img src={loadIcon} alt='Loader' />
+              </div> : 
+              <BotList 
+                  onDeleteBot={this.onDeleteBot} 
+                  onChangeStatus={this.onChangeStatus} 
+                  onClickBot={this.onChangeBot} 
+                  onCreateBot={this.onCreateBot}
+                  bots={this.state.bots}/>
+            }
+            
           </div> 
         </div>
         
