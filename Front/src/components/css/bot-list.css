@@ -34,16 +34,17 @@
     display: inline-flex;
     text-align: center;
     background-color: #FF941A;
-    width: 150px;
+    width: 200px;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     border: 0px;
+    padding: 10px;
   }
   .header-bot-list button img{
-    width: 15%;
-    height: 15%;
+    width: 20%;
+    height: 20%;
   }
   .header-bot-list button p{
     vertical-align: center;

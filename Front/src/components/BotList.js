@@ -10,7 +10,6 @@ class BotList extends React.Component{
             bot_name: ''
         }
         this.onClickBot = this.props.onClickBot.bind(this);
-        
     }
     bots = this.props.bots;
     onClickBot(id){
@@ -21,10 +20,6 @@ class BotList extends React.Component{
     };
     onDelete = (id) => {
         this.props.onDeleteBot(id);
-    }
-
-    onCreateBot = () => {
-
     }
 
     onChangeNewBotName = (event) => {
@@ -42,7 +37,7 @@ class BotList extends React.Component{
                         <p className='text-2'>Ваши чат-боты</p>
                         <div className='add-bot-field'>
                             <input className='text-3' type='text' placeholder='Введите название чат-бота' value={this.state.bot_name} onChange={this.onChangeNewBotName}/>
-                            <button onClick={() => this.props.onCreateBot(this.state.bot_name)}>
+                            <button onClick={() => this.props.onNewBot(this.state.bot_name)}>
                                 <img src={plusIcon} alt='Действия'/>
                                 <p className="text-3">Создать бота</p>
                             </button>

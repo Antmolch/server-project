@@ -400,10 +400,17 @@ class App extends React.Component{
     })
   }
 
-  onCreateBot = (bot_name) => {
+  onNewBot = (bot_name) => {
     this.setState({
       status: 'create-bot',
       bot_name: bot_name
+    })
+  }
+
+  onCreateBot = (bots) => {
+    this.setState({
+      status: 'bot-list',
+      bots: bots
     })
   }
 
@@ -454,7 +461,7 @@ class App extends React.Component{
                   onDeleteBot={this.onDeleteBot} 
                   onChangeStatus={this.onChangeStatus} 
                   onClickBot={this.onChangeBot} 
-                  onCreateBot={this.onCreateBot}
+                  onNewBot={this.onNewBot}
                   bots={this.state.bots}/>
             }
             
@@ -481,9 +488,8 @@ class App extends React.Component{
             <Header 
               page={this.state.status}
               user={this.state.user}
-              onChangePage={this.ChangePage}
-              />
-            <StepsToConnect/>
+              onChangePage={this.ChangePage}/>
+            <StepsToConnect bot_name={this.state.bot_name} user={this.state.user} onCreate={this.onCreateBot}/>
           </div>
           )
   }

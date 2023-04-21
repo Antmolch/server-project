@@ -54,7 +54,7 @@ class Header extends Component {
         <header className='header'>
         <img src={logo} className='logo'/>
         <div className='button-container'>{/* контейнер с элементами в правой части шапки */}
-          <img src={userIcon} className='userIcon'/>
+          <img src={userIcon}  style={{margin: '0px'}} className='userIcon'/>
           <p className='userName'>{this.props.user.email}</p>
           <button className='buttonList' onClick={this.toggleDropdown}>
             <img src={menuIcon} />
