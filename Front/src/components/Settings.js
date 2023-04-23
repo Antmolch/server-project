@@ -28,15 +28,15 @@ class Settings extends Component {
                 <input formMethod='Post' className='input' placeholder='Имя'/>
             </div> */}
             <form className='inputForm'>
-              <p>Email</p>
-              <input className='inputData' placeholder='Email'/>
-              <p>Логин</p>
-              <input className='inputData' placeholder='Логин'/>
-              <p>Пароль</p>
-              <input className='inputData' placeholder='Пароль'/><br/>
+              <p className='text-3'>Email</p>
+              <input className='inputData text-3' placeholder='Email'/>
+              <p className='text-3'>Логин</p>
+              <input className='inputData text-3' placeholder='Логин'/>
+              <p className='text-3'>Пароль</p>
+              <input className='inputData text-3' placeholder='Пароль'/><br/>
               
             </form>
-            <button className='button'>Сохранить</button>
+            <button className='button text-2'>Сохранить</button>
             
         </div>
     );

@@ -27,7 +27,7 @@ footer{
     justify-content: left;
     font-family: 'Formular';
     margin: 0px;
-    height: 75vh;
+    height: 70vh;
     border-radius: 0px 0px 200px 0px;
     background-color: #efefef;
     -webkit-box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.5);
@@ -55,14 +55,12 @@ footer{
     /* margin: 0 10px; */
     cursor: pointer;
     width: auto;
-    height: 30px;
+    height: 40px;
     font-family: 'Formular';
-    font-size: 15px;
     color: azure;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     vertical-align: middle;
     text-align: center;
-    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,6 +70,11 @@ footer{
     margin: 0px;
     padding: 15px 10px;
 }
+
+button.button{
+    color: #ffffff;
+}
+
 .button-log{
     background-color: #ffffff00;
     border: 1px solid #ffffff00;
@@ -79,9 +82,8 @@ footer{
     /* margin: 0 10px; */
     cursor: pointer;
     width: auto;
-    height: 30px;
+    height: 40px;
     font-family: 'Formular';
-    font-size: 15px;
     margin-right: 15px;
     color: rgb(16, 16, 16);
     vertical-align: middle;
@@ -97,9 +99,12 @@ footer{
     font-family: 'Formular';
     font-size: large;
     padding: 0px;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 40px;
+    padding-right: 40px;
     height: 20vh;
+}
+.header-start img{
+    height: 50%;
 }
 .header-start.button-container{
     display: flex;

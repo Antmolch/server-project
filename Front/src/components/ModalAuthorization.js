@@ -127,10 +127,10 @@ class ModalAuthorization extends Component {
                   {this.state.incor_pass && 'Заполните поле'}
                   {this.state.error}
                 </p>
-                <button type="submit" className='button' style={{fontSize: '20px', width: '80%'}}  onClick={() => this.userAuthorization()}>Войти</button>
+                <button type="button" className='button text-2' style={{fontSize: '20px', width: '80%'}}  onClick={() => this.userAuthorization()}>Войти</button>
                 <br/>
                 <br/>
-                <div style={{display: 'flex',width: '340px',margin: '0px', justifyContent: 'space-between', alignItems: 'center'}}><p>Нет аккаунта?</p><p style={{cursor: 'pointer', color: 'orange'}} onClick={ ()=> this.props.onOpenModal()}>Зарегестрируйтесь</p></div>
+                <div style={{display: 'flex',width: '340px',margin: '0px', justifyContent: 'space-between', alignItems: 'center'}}><p>Нет аккаунта?</p><p style={{cursor: 'pointer', color: 'orange'}} onClick={ ()=> this.props.onOpenModal()}>Зарегистрируйтесь</p></div>
               </form>
             </div>
             {this.state.isLoaded &&

@@ -30,11 +30,11 @@ class Header extends Component {
         <header className='header-start'>
           <img src={logo}/>
           <div className='button-container'>
-              <button className='button-log' onClick={() => this.props.onAuthorization()}>
+              <button className='button-log text-2' onClick={() => this.props.onAuthorization()}>
                   Войти
               </button>
-              <button className='button-reg' onClick={() => this.props.onRegistration()}>
-                  <p>Зарегестрироваться</p>
+              <button className='button-reg text-2' onClick={() => this.props.onRegistration()}>
+                  <p>Зарегистрироваться</p>
               </button>
           </div>
       </header>
@@ -42,7 +42,7 @@ class Header extends Component {
     }else if (this.props.page === "constructor"){
       return (
         <header className='header'>
-          <div style={{display: 'flex', height: 'auto', width: 'auto'}}>
+          <div style={{display: 'flex', height: '100%', width: 'auto'}}>
             <img src={logo} className='logo'/>
             <img className='prev-page' src={arrowIcon} onClick={() => this.props.onChangePage('bot-list')}/>
             <p className='text-2-gray'>Конструктор</p>
@@ -55,12 +55,12 @@ class Header extends Component {
         <img src={logo} className='logo'/>
         <div className='button-container'>{/* контейнер с элементами в правой части шапки */}
           <img src={userIcon}  style={{margin: '0px'}} className='userIcon'/>
-          <p className='userName'>{this.props.user.email}</p>
+          <p className='userName text-2'>{this.props.user.email}</p>
           <button className='buttonList' onClick={this.toggleDropdown}>
             <img src={menuIcon} />
           </button>         
           {this.state.isOpen && (
-            <div className='dropdown-container'>
+            <div className='dropdown-container text-3'>
               <ul>
                 <li>
                     <a href="#" onClick={() => this.props.onUserSettings()}>Настройки</a>
@@ -79,7 +79,7 @@ class Header extends Component {
     }else if (this.props.page === "user-settings"){
       return(
         <header className='header' style={{}}>
-        <div style={{display: 'flex', height: 'auto', width: 'auto'}}>
+        <div style={{display: 'flex', height: '100%', width: 'auto'}}>
           <img src={logo} className='logo'/>
           <img className='prev-page' src={arrowIcon} onClick={() => this.props.onChangePage('bot-list')}/>
           <p className='text-2-gray'>Настройка аккаунта</p>
@@ -89,7 +89,7 @@ class Header extends Component {
     }else if (this.props.page === "create-bot") {
       return(
         <header className='header' style={{}}>
-        <div style={{display: 'flex', height: 'auto', width: 'auto'}}>
+        <div style={{display: 'flex', height: '100%', width: 'auto'}}>
           <img src={logo} className='logo'/>
           <img className='prev-page' src={arrowIcon} onClick={() => this.props.onChangePage('bot-list')}/>
           <p className='text-2-gray'>Создание бота</p>

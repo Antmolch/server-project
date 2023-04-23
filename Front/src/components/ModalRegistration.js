@@ -174,7 +174,7 @@ class ModalRegistration extends Component {
                     {this.state.error}
                   </p>
                 
-                <button type="submit" className='button' style={{fontSize: '20px', width: '80%'}} onClick={() => this.userRegistration()}>Зарегестрироваться</button>
+                <button type="button" className='button text-2' style={{fontSize: '20px', width: '80%'}} onClick={() => this.userRegistration()}>Зарегестрироваться</button>
                 <br/>
                 <br/>
                 <p style={{display: 'flex',width: '340px',margin: '0px', justifyContent: 'space-between', alignItems: 'center'}}>Уже зарегестрированы? <p style={{cursor: 'pointer', color: 'orange'}} onClick={ ()=> this.props.onOpenModal()}>Войти</p></p>

@@ -55,10 +55,10 @@ class StartPage extends Component {
               onRegistration={this.handleOpenModalRegistration}/>
             <div className='middle-menu'>
                 <div className='middle-text'>
-                    <h1>Чат-бот в Telegram</h1>
-                    <p>Создайте бота своими руками в одном из самых популярных мессенджеров за несколько минут</p>
-                    <br/>
-                    <button className='button-reg' onClick={this.handleOpenModalRegistration}><p>Создать бота</p></button>
+                    <h1 className='text-1'>Чат-бот в Telegram</h1>
+                    <p className='text-2'>Создайте бота своими руками в одном из самых популярных мессенджеров за несколько минут</p>
+                    
+                    <button className='button-reg text-2' onClick={this.handleOpenModalRegistration}><p>Создать бота</p></button>
                 </div>
                 
                 <img className='icon' src={telegramIcon}/>

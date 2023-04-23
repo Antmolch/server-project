@@ -8,6 +8,7 @@
     border-radius: 5px;
     text-align: left;
     padding: 10px;
+    margin-bottom: 16px;
 }
 .button{
     /* padding: 10px 20px; */
@@ -18,7 +19,6 @@
     cursor: pointer;
     width: 15%;
     font-family: 'Formular';
-    font-size: medium;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .settings{
@@ -31,4 +31,8 @@
 }
 .inputForm{
     padding: 10px;
+}
+
+.inputForm p{
+    margin: 0px;
 }
