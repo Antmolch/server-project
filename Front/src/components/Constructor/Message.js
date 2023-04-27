@@ -106,7 +106,7 @@ export function Message(props){
         if (props.prev_id !== null)
             //удаление ссылки на блок
             bot.commands[bot.commands.findIndex(x => x.id === props.prev_id)].link = bot.commands[bot.commands.findIndex(x => x.id === props.prev_id)].link.filter(x => x !== command_id);
-        deleteBlock(command_id);
+        bot = deleteBlock(command_id);
         onChange(JSON.parse(JSON.stringify(bot)));
     }
 
@@ -261,7 +261,7 @@ export function Message(props){
                         />
                     
                     <label htmlFor='call'><p style={{marginTop: '0px', marginBottom: '3px'}}>Команды вызова</p></label>
-                        {modalActive && FindCallCommand(command_index).map((call) => (
+                        {modalActive && call_commands.map((call) => (
                             <div className='call-commands' key={call}>
                                 {console.log(call)}
                                 {console.log(call_commands)}

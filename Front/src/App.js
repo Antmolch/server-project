@@ -298,6 +298,32 @@ class App extends React.Component{
     })
   }
 
+  sendBots = (bot_id, updateCommands, deleteCommands, addCommands) =>{
+    this.setState({
+      isLoaded: true
+    })
+    axios({
+      method: 'post',
+      url: 'http://127.0.0.1:8000/api/bots/update',
+      data: {
+        bot_id: bot_id,
+        updateCommands: updateCommands,
+        deleteCommands: deleteCommands,
+        addCommands: addCommands
+      }
+    }).then((res) => {
+      this.setState({
+        isLoaded: false
+      })
+    })
+    .catch(err => {
+      this.setState({
+        isLoaded: false,
+        error: 'Ошибка'
+      })
+    })
+  }
+
   onChangeBot(id){
     this.setState({ 
       status: "constructor",
@@ -389,8 +415,86 @@ class App extends React.Component{
 
   ChangeBot = (bot) => {
     let bots = this.state.bots;
-    bots[bots.findIndex(x => x.id === bot.id)] = bot
-    this.setState({bots: bots})
+    let bot_index = bots.findIndex(x => x.id === bot.id);
+
+    let updateCommands = {
+      commands: [],
+      message_commands: [],
+      mail_commands: []
+    }
+
+    let deleteCommands = {
+      commands: [],
+      message_commands: [],
+      mail_commands: []
+    }
+
+    let addCommands = {
+      commands: [],
+      message_commands: [],
+      mail_commands: []
+    }
+
+    /*Проверка изменений в объекте commands*/
+    //Проверка на изменение команды или её добавление
+    bot.commands.map((curr_cmd) => {
+      let command_index = bots[bot_index].commands.findIndex(x => x.id === curr_cmd.id)
+      if (command_index === -1){
+        addCommands.commands.push(curr_cmd)
+      }else if (bots[bot_index].commands[bots[bot_index].commands.findIndex(x => x.id === curr_cmd.id)] !== curr_cmd){
+        updateCommands.commands.push(curr_cmd)
+      }
+    })
+
+    //Проверка на удаление комманды
+    bots[bot_index].commands.map((prev_cmd) => {
+      let command_index = bot.commands.findIndex(x => x.id === prev_cmd.id).length
+      if (command_index === -1)
+        deleteCommands.commands.push(prev_cmd)
+    })
+
+    /*Проверка изменений в объекте mwssage_commands*/
+    //Проверка на изменение команды или её добавление
+    bot.message_commands.map((curr_cmd) => {
+      let command_index = bots[bot_index].message_commands.findIndex(x => x.id === curr_cmd.id)
+      if (command_index === -1){
+        addCommands.message_commands.push(curr_cmd)
+      }else if (bots[bot_index].message_commands[command_index] !== curr_cmd){
+        updateCommands.message_commands.push(curr_cmd)
+      }
+    })
+
+    //Проверка на удаление комманды
+    bots[bot_index].message_commands.map((prev_cmd) => {
+      let command_index = bot.message_commands.findIndex(x => x.id === prev_cmd.id)
+      if (command_index === -1)
+        deleteCommands.message_commands.push(prev_cmd)
+    })
+
+    /*Проверка изменений в объекте mail_commands*/
+    //Проверка на изменение команды или её добавление
+    bot.mail_commands.map((curr_cmd) => {
+      let command_index = bots[bot_index].mail_commands.findIndex(x => x.id === curr_cmd.id)
+      if (command_index === -1){
+        addCommands.push(curr_cmd)
+      }else if (bots[bot_index].mail_commands[command_index] !== curr_cmd){
+        updateCommands.mail_commands.push(curr_cmd)
+      }
+    })
+
+    //Проверка на удаление комманды
+    bots[bot_index].mail_commands.map((prev_cmd) => {
+      let command_index = bot.mail_commands.findIndex(x => x.id === prev_cmd.id)
+      if (command_index === -1)
+        deleteCommands.mail_commands.push(prev_cmd)
+    })
+
+    this.sendBots(bot.id, updateCommands, deleteCommands, addCommands);
+    this.getBots();
+    bots[bot_index] = bot;
+    this.setState({
+      bots: bots
+    })
   }
 
   ChangePage = (page) => {
@@ -434,13 +538,19 @@ class App extends React.Component{
             page={this.state.status}
             onChangePage={this.ChangePage}
             />
-          <div className="bot-constructor">
-            <FunctionsBlock onChangeButton={this.onChangeButton} />
-            <Constructor 
-              onChangeBot={this.ChangeBot} 
-              bot={JSON.parse(JSON.stringify(this.state.bots[this.state.bots.findIndex(x => x.id === this.state.id)]))} 
-              active_button={this.state.active_func_button}/>
-          </div>
+            {this.state.isLoaded ? 
+              <div className='load-bots'>
+                <img src={loadIcon} alt='Loader' />
+              </div> : 
+              <div className="bot-constructor">
+                <FunctionsBlock onChangeButton={this.onChangeButton} />
+                <Constructor 
+                  isLoaded={this.state.isLoaded}
+                  onChangeBot={this.ChangeBot} 
+                  bot={JSON.parse(JSON.stringify(this.state.bots[this.state.bots.findIndex(x => x.id === this.state.id)]))} 
+                  active_button={this.state.active_func_button}/>
+              </div>
+            }
         </div>
         
       )
