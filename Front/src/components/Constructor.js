@@ -14,12 +14,7 @@ constructor(props){
 
 }
 
-useEffect(){
-    this.props.onChangeBot(this.state.bot);
-}
-
 Change = (bot) => {
-    console.log(bot)
     this.links_commands = this.FindFollowLinksCommands(bot);
     this.setState({
         bot: bot,
