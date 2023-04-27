@@ -30,6 +30,7 @@ class BotList extends React.Component{
 
     
     render(){
+        {console.log(this.bots)}
         if (this.props.bots.length > 0)
             return(
                 <div className="bot-list">

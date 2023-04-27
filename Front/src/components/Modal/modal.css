@@ -12,6 +12,7 @@
     opacity: 0;
     pointer-events: none;
     transition: 0.5s;
+    z-index: 2;
 }
 
 .modal.active{
@@ -35,6 +36,7 @@
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 16px;
+    padding-bottom: 0px;
 
 }
 
@@ -80,8 +82,8 @@
     width: 100%;
     align-items: center;
     height: calc(85% - 32px);
-    overflow: none;
-    
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .modal-form button{
@@ -100,6 +102,7 @@
     width: 95%;
     justify-content: space-between;
     align-items: center;
+    margin-right: 0px;
     margin-bottom: 5px;
     height: 32px;
 }

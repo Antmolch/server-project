@@ -17,7 +17,6 @@ export function Mail(props){
 
     
     const addBlock = () => {
-        console.log(active_button)
         if (active_button === "none")
             console.log("Не выбран блок для добавления")
         else if (active_button === "mail")
@@ -27,17 +26,17 @@ export function Mail(props){
             bot.commands.push({
                 id: last_id + 1,
                 type: "message",
-                call: [null],
-                link: [null]
+                call: [],
+                link: []
             });
             bot.message_commands.push({
                 id: last_id + 1,
                 name: "Без имени",
                 message: "",
-                media: [null]
+                media: []
             })
             console.log("работаем")
-            onChange(bot);
+            onChange(JSON.parse(JSON.stringify(bot)));
         }
         
     }

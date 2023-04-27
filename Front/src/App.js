@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import './normalize.css'
 import './components/css/style.css'
 import FunctionsBlock from './components/FunctionsBlock'
@@ -285,7 +285,6 @@ class App extends React.Component{
         email: this.state.email
       }
     }).then((res) => {
-      console.log(res)
       this.setState({
         isLoaded: false,
         bots: res.data
@@ -307,10 +306,11 @@ class App extends React.Component{
   }
   onChangeStatus(id){
     let numberBot = this.state.bots.findIndex(x => x.id === id);
-    this.state.bots[numberBot].status = !this.state.bots[numberBot].status
+    let bots = this.state.bots;
+    bots[numberBot].status = !this.state.bots[numberBot].status;
+    this.setState({bots: bots})
   }
   onDeleteBot(id){
-    console.log(this.state.bots);
     let newBots = this.state.bots;
     let numberBot = newBots.findIndex(x => x.id === id);
     //Обращение к бд для удаления бота
@@ -388,10 +388,9 @@ class App extends React.Component{
   }
 
   ChangeBot = (bot) => {
-    console.log(bot)
-    this.setState({
-      bot: bot
-    })
+    let bots = this.state.bots;
+    bots[bots.findIndex(x => x.id === bot.id)] = bot
+    this.setState({bots: bots})
   }
 
   ChangePage = (page) => {
@@ -414,11 +413,13 @@ class App extends React.Component{
     })
   }
 
+  onSaveBot = (bot) => {
+    
+  }
+
   render(){
     console.log("render")
-    console.log(this.state.status)
-    console.log(this.state.active_func_button)
-    console.log(this.state.user.token)
+    console.log(this.state.bots)
     if (this.state.status === "start-page"){
       return(
         <div className='app'>
@@ -437,7 +438,7 @@ class App extends React.Component{
             <FunctionsBlock onChangeButton={this.onChangeButton} />
             <Constructor 
               onChangeBot={this.ChangeBot} 
-              bot={this.state.bots[this.state.bots.findIndex(x => x.id === this.state.id)]} 
+              bot={JSON.parse(JSON.stringify(this.state.bots[this.state.bots.findIndex(x => x.id === this.state.id)]))} 
               active_button={this.state.active_func_button}/>
           </div>
         </div>
