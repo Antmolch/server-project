@@ -3,6 +3,13 @@ import './css/constructor.css'
 import Message from './Constructor/Message'
 import Mail from './Constructor/Mail'
 import plusIcon from './img/plus-svg.svg'
+import saveIcon from './img/save.svg'
+import backArrowActiveIcon from './img/back-arrow-active.svg'
+import nextArrowActiveIcon from './img/next-arrow-active.svg'
+import backArrowIcon from './img/back-arrow.svg'
+import nextArrowIcon from './img/next-arrow.svg'
+
+import { Guid } from 'js-guid';
 
 class Constructor extends React.Component{
 constructor(props){
@@ -12,7 +19,6 @@ constructor(props){
         bot: props.bot,
         start_commands: this.FindStartCommands(props.bot)
     }
-
 }
 
 Change = (bot) => {
@@ -24,19 +30,19 @@ Change = (bot) => {
 }
 
 addNewBlock = () => {
-    let last_id = this.state.bot.commands[this.state.bot.commands.length - 1].id;
     let bot = JSON.parse(JSON.stringify(this.state.bot));
     if (this.props.active_button === "none")
         console.log("Не выбран блок для добавления")
     else if (this.props.active_button === "mail"){
+        let guid = bot.id + Guid.newGuid()
         bot.commands.push({
-            id: last_id + 1,
+            id: guid,
             type: "mail",
             call: [],
             link: []
         });
         bot.mail_commands.push({
-            id: last_id + 1,
+            id: guid,
             name: "Без имени",
             date: '',
             message: "",
@@ -47,14 +53,15 @@ addNewBlock = () => {
             start_commands: this.FindStartCommands(bot)
         })
     }else if (this.props.active_button === "message"){
+        let guid = bot.id + Guid.newGuid()
         bot.commands.push({
-            id: last_id + 1,
+            id: guid,
             type: "message",
             call: [],
             link: []
         });
         bot.message_commands.push({
-            id: last_id + 1,
+            id: guid,
             name: "Без имени",
             message: "",
             media: []
@@ -68,21 +75,21 @@ addNewBlock = () => {
 }
 
 addStartBlock = () => {
-    let last_id = this.state.bot.commands[this.state.bot.commands.length - 1].id;
     let bot = JSON.parse(JSON.stringify(this.state.bot));
     if (this.props.active_button === "none")
         console.log("Не выбран блок для добавления")
     else if (this.props.active_button === "mail"){
         console.log("Нельзя добавлять рассылку в это место")
     }else if (this.props.active_button === "message"){
+        let guid = bot.id + Guid.newGuid()
         bot.commands.push({
-            id: last_id + 1,
+            id: guid,
             type: "message",
             call: [{id: 0, command_call: "/start"}],
             link: []
         });
         bot.message_commands.push({
-            id: last_id + 1,
+            id: guid,
             name: "Без имени",
             message: "",
             media: []
@@ -149,7 +156,7 @@ FindStartCommand(bot){
                 }
                 {this.FindStartCommand(this.state.bot) === null && 
                     <div className='add-block-field'>
-                        <button><img src={plusIcon} alt="Добавить" onClick={() => this.addStartBlock()}/></button>
+                        <a href='#' title='Добавить'><img src={plusIcon} alt="Добавить" onClick={() => this.addStartBlock()}/></a>
                     </div>
                 }
                 {this.state.start_commands.map((cmd) => (
@@ -188,7 +195,7 @@ FindStartCommand(bot){
                 <hr></hr>
                 <h2 className='text-2'>Добавление нового блока</h2>
                 <div className='add-block-field'>
-                    <button><img src={plusIcon} alt="Добавить" onClick={() => this.addNewBlock()}/></button>
+                    <a href='#' title='Добавить'><img src={plusIcon} alt="Добавить" onClick={() => this.addNewBlock()}/></a>
                 </div>
                 {this.state.start_commands.map((cmd) => (
                     this.state.bot.commands[this.state.bot.commands.findIndex(x => x.id === cmd.id)].type === "mail" &&
@@ -204,7 +211,15 @@ FindStartCommand(bot){
                                 prev_id={null}/>
                         </div>
                 ))}
-                <div onClick={() => this.SaveBot()} className='save-button text-2'>Сохранить</div>
+                <a href="#" onClick={() => this.SaveBot()} className='save-button text-2' title='Сохранить'>
+                    <img src={saveIcon} alt='Сохранить'/>
+                </a>
+                <a href="#" onClick={() => this.SaveBot()} className='back-arrow text-2' title='Назад'>
+                    <img src={backArrowIcon} alt='Сохранить'/>
+                </a>
+                <a href="#" onClick={() => this.SaveBot()} className='next-arrow text-2' title='Вперёд'>
+                    <img src={nextArrowIcon} alt='Сохранить'/>
+                </a>
             </div>
         );
     }

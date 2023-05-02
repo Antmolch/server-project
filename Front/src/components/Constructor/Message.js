@@ -6,6 +6,12 @@ import '../css/message.css'
 import Modal from '../Modal/Modal';
 import CallList from './list-components/ReactLList';
 import '../css/errors.css'
+import arrowIcon from '../img/arrow-bottom.svg'
+import {decode as base64_decode, encode as base64_encode} from 'base-64';
+
+import FileList from './list-components/FileList'
+
+import { Guid } from 'js-guid';
 
 export function Message(props){
     var bot = props.bot;
@@ -42,7 +48,11 @@ export function Message(props){
     const FindMediaCommand = (msg_index) => {
         let medias = [];
         bot.message_commands[msg_index].media.map((media) =>{
-            medias.push(media.file);
+            medias.push({
+                name: media.name,
+                type: media.type,
+                file: media.file
+            });
         })
         return medias;
     }
@@ -68,15 +78,16 @@ export function Message(props){
         else if (active_button === "mail")
             console.log("Нельзя добавлять рассылку в это место")
         else if (active_button === "message"){
-            bot.commands[command_index].link.push(last_id + 1);
+            let guid = bot.id + Guid.newGuid()
+            bot.commands[command_index].link.push(guid);
             bot.commands.push({
-                id: last_id + 1,
+                id: guid,
                 type: "message",
                 call: [],
                 link: []
             });
             bot.message_commands.push({
-                id: last_id + 1,
+                id: guid,
                 name: "Без имени",
                 message: "",
                 media: []
@@ -162,13 +173,12 @@ export function Message(props){
 
     const CreateCallToChange = () => {
         let calls = [];
-        let index = 0;
         call_commands.map((call) =>{
+            let guid = command_id + Guid.newGuid();
             calls.push({
-                id: index,
+                id: guid,
                 command_call: call
             });
-            index++;
         })
         console.log(calls)
         return calls
@@ -176,16 +186,47 @@ export function Message(props){
 
     const CreateMediaToChange = () => {
         let files = [];
-        let index = 0;
         media.map((file) => {
+            let guid = command_id + Guid.newGuid();
             files.push({
-                id: index,
-                file: file
+                id: guid,
+                name: file.name,
+                type: file.type,
+                file: file.file
             });
-            index++;
         })
         return files
     }
+
+
+    const uploadImage = async (e) => {
+        const file = e.target.files[0];
+        const base64 = await convertBase64(file);
+        let files = media;
+        console.log("e.target")
+        console.log(e.target.files[0])
+        files.push({
+            name: e.target.files[0].name,
+            type: e.target.files[0].type,
+            file: base64
+        })
+        setMedia(files)
+      };
+    
+      const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(file);
+    
+          fileReader.onload = () => {
+            resolve(fileReader.result);
+          };
+    
+          fileReader.onerror = (error) => {
+            reject(error);
+          };
+        });
+      };
 
     return(
         //Блок сообщения
@@ -202,17 +243,27 @@ export function Message(props){
                     <div>
                         {/*Имя блока + Удаление блока*/}
                         <p className='text-4'>{bot.message_commands[message_index].name}</p>
-                        <div onClick={e => e.stopPropagation()}><a className='delete-block-button' onClick={() => onDeleteBlock()}><img src={exitIcon} alt="close"/></a></div>
+                        <a href="#" title='Удалить' onClick={e => e.stopPropagation()}><a className='delete-block-button' onClick={() => onDeleteBlock()}><img src={exitIcon} alt="close"/></a></a>
                     </div>
                     
                     <div className='message-text'><p className='text-5-gray'>{bot.message_commands[message_index].message !== "" ? bot.message_commands[message_index].message : "Пустой блок"}</p></div>
                 </div>
-                <button onClick={e => e.stopPropagation()} className="add-message-button"><img src={plusIcon} alt="Добавить" onClick={() => addBlock()}/></button>
+                <a href="#" title="Добавить" onClick={e => e.stopPropagation()} className="add-message-button"><img src={plusIcon} alt="Добавить" onClick={() => addBlock()}/></a>
             </div>
             <div className='inline-bot-block'>
                 {bot.commands[command_index].link.map((id) => (
                         bot.commands[bot.commands.findIndex(x => x.id === id)].type === "message" &&
                             <div key={id} className="bot-block">
+                                {bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.findIndex(x => x === id) === 0 ? 
+                                <div className='lineToArrow-start'></div>
+                                :
+                                bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.length - 1 === bot.commands[command_index].link.findIndex(x => x === id) ?
+                                <div className='lineToArrow-end'></div>
+                                :
+                                bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.length - 1 !== bot.commands[command_index].link.findIndex(x => x === id) && bot.commands[command_index].link.findIndex(x => x === id) !== 0 && 
+                                <div className='lineToArrow'></div>
+                                }
+                                <img className="imageArrow" src={arrowIcon} alt=''/>
                                 <Message 
                                     onChange={onChange} 
                                     bot={bot} 
@@ -261,10 +312,9 @@ export function Message(props){
                         />
                     
                     <label htmlFor='call'><p style={{marginTop: '0px', marginBottom: '3px'}}>Команды вызова</p></label>
+                        {console.log(call_commands)}
                         {modalActive && call_commands.map((call) => (
                             <div className='call-commands' key={call}>
-                                {console.log(call)}
-                                {console.log(call_commands)}
                                 <CallList call_command={call} onChangeCall={onChangeCall} onDeleteCall={onDeleteCall}/>
                             </div>
                         ))}
@@ -281,9 +331,21 @@ export function Message(props){
                         </div>
                     </div>
                     <div className='error-message text-5'><p style={{color: "red"}}>{new_call_error}</p></div>
+
+                    <label htmlFor='file'><p style={{marginTop: '0px', marginBottom: '3px'}}>Файлы</p></label>
+                    {console.log(media)}
+                    
+                    
+                    {modalActive && media.map((obj) => (
+                        <div key={obj.name}>
+                            <FileList file={obj.file} name={obj.name} type={obj.type}/>
+                        </div>
+                    ))}
                     <input 
                         type='file' 
-                        accept='image/*, video/*'></input>
+                        accept='image/*, video/*, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        onChange={e => uploadImage(e)}>
+                    </input>
                     <button onClick={() => changeData()}>Сохранить</button>
                 </form>
             </Modal>

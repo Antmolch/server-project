@@ -104,9 +104,14 @@
     margin-top: auto;
     margin-bottom: auto;
     margin-left: auto;
+    cursor: pointer;
   }
 
   .header p{
     margin-top: auto;
     margin-bottom: auto;
+  }
+
+  .add-bot-button{
+    cursor: pointer;
   }

@@ -71,11 +71,11 @@ export function Mail(props){
             <div className="message-field">
                 <div>
                     <p className='text-4'>{bot.mail_commands[message_index].name}</p>
-                    <a className='delete-block-button' href='#' onClick={() => onDeleteBlock()}><img src={exitIcon}/></a>
+                    <a href="#" title='Удалить' className='delete-block-button' onClick={() => onDeleteBlock()}><img src={exitIcon}/></a>
                 </div>
                 <div className='message-text'><p className='text-5-gray'>{bot.mail_commands[message_index].message !== "" ? bot.mail_commands[message_index].message : "Пустой блок"}</p></div>
             </div>
-            <button onClick={() => addBlock()} className="add-message-button"><img src={plusIcon} alt="Добавить"/></button>
+            <a href="#" title='Добавить' onClick={() => addBlock()} className="add-message-button"><img src={plusIcon} alt="Добавить"/></a>
         </div>
             <div className='inline-bot-block'>
                 {bot.commands[command_index].link.map((id) => (
