@@ -14,8 +14,8 @@ function FileList(props){
         let blob = new Blob([file], {type: type});
 
         let link = document.createElement('a');
+        
         link.download = name;
-
         link.href = file;
         link.type = type;
 

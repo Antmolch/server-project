@@ -210,7 +210,7 @@ export function Message(props){
             type: e.target.files[0].type,
             file: base64
         })
-        setMedia(files)
+        setMedia([...files])
       };
     
       const convertBase64 = (file) => {
@@ -227,6 +227,12 @@ export function Message(props){
           };
         });
       };
+
+      const onDeleteMedia = (file) => {
+        let medias = media;
+        medias.splice(medias.findIndex(x => x.file === file), 1)
+        setMedia([...medias])
+      }
 
     return(
         //Блок сообщения
@@ -326,7 +332,7 @@ export function Message(props){
                             value={new_call}
                             onChange={e => setNewCalls(e.target.value)}
                             />
-                        <div className='add-call'>
+                        <div className='add-call' style={{cursor: 'pointer'}}>
                             <img src={plusBlackIcon} onClick={() => onAddCall()} alt='Добавить'/>
                         </div>
                     </div>
@@ -338,7 +344,7 @@ export function Message(props){
                     
                     {modalActive && media.map((obj) => (
                         <div key={obj.name}>
-                            <FileList file={obj.file} name={obj.name} type={obj.type}/>
+                            <FileList onDelete={onDeleteMedia} file={obj.file} name={obj.name} type={obj.type}/>
                         </div>
                     ))}
                     <input 

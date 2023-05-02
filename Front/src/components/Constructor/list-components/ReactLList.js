@@ -30,7 +30,7 @@ function CallList(props){
                 onChange={e => onChange(e)}
                 value={call}
                 />
-            <div className='delete-call'>
+            <div className='delete-call' style={{cursor: 'pointer'}}>
                 <img src={exitIcon} onClick={() => onDelete(original_call)} alt='Удалить'/>
             </div>
         </div>

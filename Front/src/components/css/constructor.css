@@ -223,18 +223,18 @@
 
   .bot-block .lineToArrow-start {
     width: calc(100% - 60px);
-    height: 3px;
+    height: 2.5px;
     background-color: black;
     margin-left: 83px;
   }
   .bot-block .lineToArrow-end {
     width: 85px;
-    height: 3px;
+    height: 2.5px;
     background-color: black;
   }
   .bot-block .lineToArrow {
     width: calc(100% + 20px);
-    height: 3px;
+    height: 2.5px;
     background-color: black;
   }
   .bot-block .imageArrow {
@@ -327,6 +327,7 @@
   }
 
   .file{
+    padding-left: 5px;
     max-width: 150px;
     height: 60px;
     border-color: #EFEFEF;
@@ -373,4 +374,8 @@
     -webkit-line-clamp: 2;
     display: -webkit-box;
     -webkit-box-orient: vertical;
+  }
+
+  button{
+    cursor: pointer;
   }
