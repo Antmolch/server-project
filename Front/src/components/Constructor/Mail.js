@@ -2,6 +2,8 @@ import React from 'react';
 import plusIcon from '../img/plus-svg.svg'
 import exitIcon from '../img/exit.svg'
 import Message from './Message'
+import arrowIcon from '../img/arrow-bottom.svg'
+
 
 export function Mail(props){
     var bot = props.bot;
@@ -82,6 +84,38 @@ export function Mail(props){
                         id !== null &&
                         bot.commands[bot.commands.findIndex(x => x.id === id)].type === "message" &&
                             <div key={id} className="bot-block">
+                            {bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.findIndex(x => x === id) === 0 ? 
+
+                                <div className='vertical-line'></div>
+
+                                :
+                                null
+                            }
+                            {bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.length - 1 === bot.commands[command_index].link.findIndex(x => x === id) ? 
+
+                                <div className='vertical-line-opacity'></div>
+
+                                :
+                                null
+                            }
+                            {bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.length - 1 !== bot.commands[command_index].link.findIndex(x => x === id) && bot.commands[command_index].link.findIndex(x => x === id) !== 0 ? 
+
+                                <div className='vertical-line-opacity'></div>
+
+                                :
+                                null
+                            }
+                            {bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.findIndex(x => x === id) === 0 ? 
+                                <div className='lineToArrow-start'></div>
+                                :
+                                bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.length - 1 === bot.commands[command_index].link.findIndex(x => x === id) ?
+                                <div className='lineToArrow-end'></div>
+                                :
+                                bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.length - 1 !== bot.commands[command_index].link.findIndex(x => x === id) && bot.commands[command_index].link.findIndex(x => x === id) !== 0 && 
+                                <div className='lineToArrow'></div>
+                            
+                            }
+                            <img className="imageArrow" src={arrowIcon} alt=''/>
                                 <Message 
                                     onChangeBot={onChange} 
                                     bot={bot} 

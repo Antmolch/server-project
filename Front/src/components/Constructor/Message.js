@@ -260,6 +260,27 @@ export function Message(props){
                 {bot.commands[command_index].link.map((id) => (
                         bot.commands[bot.commands.findIndex(x => x.id === id)].type === "message" &&
                             <div key={id} className="bot-block">
+                            {bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.findIndex(x => x === id) === 0 ? 
+
+                                <div className='vertical-line'></div>
+
+                                :
+                                null
+                            }
+                                {bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.length - 1 === bot.commands[command_index].link.findIndex(x => x === id) ? 
+
+                                <div className='vertical-line-opacity'></div>
+
+                                :
+                                null
+                            }
+                                {bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.length - 1 !== bot.commands[command_index].link.findIndex(x => x === id) && bot.commands[command_index].link.findIndex(x => x === id) !== 0 ? 
+
+                                <div className='vertical-line-opacity'></div>
+
+                                :
+                                null
+                            }
                                 {bot.commands[command_index].link.length !== 1 && bot.commands[command_index].link.length !== 0 && bot.commands[command_index].link.findIndex(x => x === id) === 0 ? 
                                 <div className='lineToArrow-start'></div>
                                 :
