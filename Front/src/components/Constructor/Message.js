@@ -7,7 +7,6 @@ import Modal from '../Modal/Modal';
 import CallList from './list-components/ReactLList';
 import '../css/errors.css'
 import arrowIcon from '../img/arrow-bottom.svg'
-import {decode as base64_decode, encode as base64_encode} from 'base-64';
 
 import FileList from './list-components/FileList'
 
@@ -19,7 +18,6 @@ export function Message(props){
     const command_id = props.id;
     const message_index = bot.message_commands.findIndex(x => x.id === command_id);
     const command_index = bot.commands.findIndex(x => x.id === command_id);
-    const last_id = bot.commands[bot.commands.length - 1].id;
     const active_button = props.active_button;
     
 

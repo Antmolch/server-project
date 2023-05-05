@@ -6,6 +6,7 @@ import logo from './img/Vector.svg'
 
 
 import './css/modal.css'
+import writeCookie from '../Session/WriteCookie';
 class ModalAuthorization extends Component {
     constructor(props) {
         super(props);
@@ -38,7 +39,7 @@ class ModalAuthorization extends Component {
       };
 
       userAuthorization = () => {
-        if (this.state.email === ''){
+        if (this.state.name === ''){
           this.deleteError()
           this.setState({
             incor_email: true
@@ -52,18 +53,19 @@ class ModalAuthorization extends Component {
           this.setState({isLoaded: true});
           axios({
             method: 'post',
-            url: 'http://127.0.0.1:8000/api/login',
+            url: 'http://127.0.0.1:8000/auth/token/login',
             data: {
-              email: this.state.email,
+              username: this.state.name,
               password: this.state.password
             }
           }).then((res) => {
             this.setState({
               isLoaded: false
             })
-            this.props.onAuthorization(res.data.email, res.data.password)
+            this.props.onAuthorization(this.state.name, res.data.auth_token, res.data.id)
           })
           .catch(err => {
+            console.log(err)
             this.deleteError()
             this.setState({
               isLoaded: false,
@@ -100,11 +102,11 @@ class ModalAuthorization extends Component {
 
                   
                   <input
-                    type="email"
-                    name="email"
-                    placeholder='Email'
+                    type="name"
+                    name="name"
+                    placeholder='Username'
                     className='label'
-                    value={this.state.email}
+                    value={this.state.name}
                     onChange={this.handleInputChange}
                   />
                 

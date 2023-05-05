@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 
+import writeCookie from '../Session/WriteCookie';
+import readCookie from '../Session/readCookie';
+
 import loadIcon from './img/loading-svgrepo-com.svg'
 import logo from './img/Vector.svg'
 // import '../css/startPage.css'
@@ -55,7 +58,7 @@ class ModalRegistration extends Component {
           this.setState({isLoaded: true});
           axios({
             method: 'post',
-            url: 'http://127.0.0.1:8000/api/login',
+            url: 'http://127.0.0.1:8000/auth/users/',
             data: {
               email: this.state.email,
               username: this.state.name,
@@ -64,27 +67,38 @@ class ModalRegistration extends Component {
           }).then((res) => {
             console.log(res)
             console.log('-----')
-            axios({
-              method: 'post',
-              url: 'http://127.0.0.1:8000/api/login',
-              data: {
-                email: res.data.email,
-                password: res.data.password
-              }
-            }).then((res) => {
-              console.log(res)
-              console.log('-----')
-              this.setState({
-                isLoaded: false
-              })
-              this.props.onRegistration(res.data.email, res.data.password)
-            })
-          }).catch(err => {
             this.deleteError()
             this.setState({
               isLoaded: false,
-              error: 'Данная почта уже зарегистрирована'
+              error: 'Регистрация прошла успешно'
             })
+          }).catch(err => {
+            console.log(err)
+            if (err.response.data.email !== undefined){
+              this.deleteError()
+              this.setState({
+                isLoaded: false,
+                error: 'Пользователь с такой почтой уже зарегистрирован'
+              })
+            }else if (err.response.data.username !== undefined){
+              this.deleteError()
+              this.setState({
+                isLoaded: false,
+                error: 'Имя неверно'
+              })
+            }else if (err.response.data.password !== undefined){
+              this.deleteError()
+              this.setState({
+                isLoaded: false,
+                error: 'Пароль слишком простой'
+              })
+            }else{
+              this.deleteError()
+              this.setState({
+                isLoaded: false,
+                error: 'Что-то пошло не так'
+              })
+            }
             })
           }
       }
@@ -177,7 +191,7 @@ class ModalRegistration extends Component {
                 <button type="button" className='button text-2' style={{fontSize: '20px', width: '80%'}} onClick={() => this.userRegistration()}>Зарегестрироваться</button>
                 <br/>
                 <br/>
-                <p style={{display: 'flex',width: '340px',margin: '0px', justifyContent: 'space-between', alignItems: 'center'}}>Уже зарегестрированы? <p style={{cursor: 'pointer', color: 'orange'}} onClick={ ()=> this.props.onOpenModal()}>Войти</p></p>
+                <div style={{display: 'flex',width: '340px',margin: '0px', justifyContent: 'space-between', alignItems: 'center'}}>Уже зарегестрированы? <p style={{cursor: 'pointer', color: 'orange'}} onClick={ ()=> this.props.onOpenModal()}>Войти</p></div>
               </form>
             </div>
             {this.state.isLoaded &&

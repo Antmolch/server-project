@@ -280,7 +280,7 @@ export function Mail(props){
                     
                     <label htmlFor='date'><p style={{marginTop: '0px', marginBottom: '3px'}}>Дата и время рассылки</p></label>
                         <input 
-                            type='datetime' 
+                            type='datetime-local' 
                             id='date' 
                             value={call_date}
                             onChange={e => setCallDate(e.target.value)}
