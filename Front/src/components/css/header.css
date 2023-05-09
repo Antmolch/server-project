@@ -62,17 +62,22 @@
     rotate: -90deg;
   }
 
+  .close-list{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  }
 
   .dropdown-container {
     position: absolute;
-    top: 15%;
-    left: 85%;
+    top: 12.5%;
+    right: 100px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-top: none;
     z-index: 1;
-    font-family: 'Formular';
-    font-size: 14px;
     border-radius: 5px;
     border: #6D6D6D;
     box-shadow: 0 10px 16px rgba(15, 15, 15, 0.1);

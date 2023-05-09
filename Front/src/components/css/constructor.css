@@ -222,25 +222,30 @@
   }
 
   .bot-block .lineToArrow-start {
+    margin: 0px;
     width: calc(100% - 60px);
     height: 2.2px;
     background-color: black;
     margin-left: 83px;
   }
   .bot-block .lineToArrow-end {
+    margin: 0px;
     width: 85px;
     height: 2.2px;
     background-color: black;
   }
   .bot-block .lineToArrow {
+    margin: 0px;
     width: calc(100% + 20px);
     height: 2.2px;
     background-color: black;
   }
   .bot-block .imageArrow {
+    margin: 0px;
     padding-left: 76px;
   }
   .bot-block .vertical-line {
+    margin: 0px;
     content: '';
     width: 2.2px;
     height: 19px;
@@ -250,6 +255,7 @@
 
   }
   .bot-block .vertical-line-opacity {
+    margin: 0px;
     content: '';
     width: 2.2px;
     height: 19px;

@@ -12,6 +12,7 @@ export function Bot(props){
 
 
     return(
+        <div>
         <div className="bot">
             <a className="name-bot" href="#" onClick={() => props.onClickBot(bot.id)}>
                 <div>
@@ -28,8 +29,9 @@ export function Bot(props){
             <button className="menu-trigger" onClick={() => setIsActive(!isActive)}>
                 <img src={ThreeDots}/>
             </button>
-            {isActive && <nav className={`menu ${isActive ? "active" : "inactive"}`}>
-                <ul className="text-4">
+            
+            {isActive && <nav onClick={e => e.stopPropagation()} className={`menu ${isActive ? "active" : "inactive"}`}>
+                <ul className="text-3">
                     <li>
                     <a href="#" onClick={() => props.onClickBot(bot.id)}>Изменить</a>
                     </li>
@@ -44,6 +46,9 @@ export function Bot(props){
                     </li>
                 </ul>
                 </nav>}
+            {isActive && <div onClick={() => setIsActive(!isActive)} className='close-menu'></div>}
+        </div>
+            {isActive && <div onClick={() => setIsActive(!isActive)} className='close-menu'></div>}
         </div>
     );
 }

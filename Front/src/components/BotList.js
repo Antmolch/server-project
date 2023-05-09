@@ -7,7 +7,8 @@ class BotList extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            bot_name: ''
+            bot_name: '',
+            error: ''
         }
         this.onClickBot = this.props.onClickBot.bind(this);
     }
@@ -22,23 +23,28 @@ class BotList extends React.Component{
         this.props.onDeleteBot(id);
     }
 
-    onChangeNewBotName = (event) => {
-        this.setState({
-            bot_name: event.target.value
-        })
+    newBot = () => {
+        if(this.state.bot_name !== ''){
+            this.props.onNewBot(this.state.bot_name)
+            this.setState({error: ''})
+        }else
+            this.setState({error: 'Введите имя бота'})
     }
+
 
     
     render(){
-        {console.log(this.bots)}
         if (this.props.bots.length > 0)
             return(
                 <div className="bot-list">
                     <div className='header-bot-list'>
                         <p className='text-2'>Ваши чат-боты</p>
                         <div className='add-bot-field'>
-                            <input className='text-3' type='text' placeholder='Введите название чат-бота' value={this.state.bot_name} onChange={this.onChangeNewBotName}/>
-                            <button className="add-bot-button" onClick={() => this.props.onNewBot(this.state.bot_name)}>
+                        <div className='bot-name-field'>
+                            <input className='text-3' type='text' placeholder='Введите название чат-бота' value={this.state.bot_name} onChange={e => this.setState({bot_name: e.target.value})}/>
+                            <p className='error-name-newbot text-4'>{this.state.error}</p>
+                        </div>
+                            <button className="add-bot-button" onClick={() => this.newBot()}>
                                 <img src={plusIcon} alt='Действия'/>
                                 <p className="text-3">Создать бота</p>
                             </button>

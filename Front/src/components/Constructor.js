@@ -17,23 +17,51 @@ constructor(props){
     this.links_commands = this.FindFollowLinksCommands(props.bot);
     this.state = {
         bot: props.bot,
-        start_commands: this.FindStartCommands(props.bot)
+        start_commands: this.FindStartCommands(props.bot),
+        change_container: [JSON.parse(JSON.stringify(props.bot))],
+        index: 0
+    }
+}
+
+FixationChange = (bot) => {
+    let container = JSON.parse(JSON.stringify(this.state.change_container));
+    if(this.state.index !== container.length - 1){
+        container.splice(this.state.index + 1, container.length - this.state.index - 1)
+        container.push(bot)
+        this.setState({change_container: container, index: this.state.index + 1})
+    }else if(container.length === 10){
+        container.splice(0, 1);
+        container.push(bot);
+        this.setState({change_container: container, index: this.state.index})
+    }else{
+        container.push(bot);
+        this.setState({change_container: container, index: this.state.index + 1})
     }
 }
 
 Change = (bot) => {
     this.links_commands = this.FindFollowLinksCommands(bot);
+    this.FixationChange(bot);
     this.setState({
         bot: bot,
         start_commands: this.FindStartCommands(bot)
     });
 }
 
+RollBackBot = () => {
+    this.links_commands = this.FindFollowLinksCommands(this.state.change_container[this.state.index - 1]);
+    this.setState({index: this.state.index - 1, bot: JSON.parse(JSON.stringify(this.state.change_container[this.state.index - 1])), start_commands: this.FindStartCommands(this.state.change_container[this.state.index - 1])})
+}
+
+
+RollForwardBot = () => {
+    this.links_commands = this.FindFollowLinksCommands(this.state.change_container[this.state.index + 1]);
+    this.setState({index: this.state.index + 1, bot: JSON.parse(JSON.stringify(this.state.change_container[this.state.index + 1])), start_commands: this.FindStartCommands(this.state.change_container[this.state.index + 1])})
+}
+
 addNewBlock = () => {
     let bot = JSON.parse(JSON.stringify(this.state.bot));
-    if (this.props.active_button === "none")
-        console.log("Не выбран блок для добавления")
-    else if (this.props.active_button === "mail"){
+    if (this.props.active_button === "mail"){
         let guid = bot.id + Guid.newGuid()
         bot.commands.push({
             id: guid,
@@ -48,6 +76,7 @@ addNewBlock = () => {
             message: "",
             media: []
         })
+        this.FixationChange(bot);
         this.setState({
             bot: bot,
             start_commands: this.FindStartCommands(bot)
@@ -66,7 +95,7 @@ addNewBlock = () => {
             message: "",
             media: []
         })
-        console.log("работаем")
+        this.FixationChange(bot);
         this.setState({
             bot: bot,
             start_commands: this.FindStartCommands(bot)
@@ -76,11 +105,7 @@ addNewBlock = () => {
 
 addStartBlock = () => {
     let bot = JSON.parse(JSON.stringify(this.state.bot));
-    if (this.props.active_button === "none")
-        console.log("Не выбран блок для добавления")
-    else if (this.props.active_button === "mail"){
-        console.log("Нельзя добавлять рассылку в это место")
-    }else if (this.props.active_button === "message"){
+    if (this.props.active_button === "message"){
         let guid = bot.id + Guid.newGuid()
         bot.commands.push({
             id: guid,
@@ -95,6 +120,7 @@ addStartBlock = () => {
             media: []
         })
         console.log("работаем")
+        this.FixationChange(bot);
         this.setState({
             bot: bot,
             start_commands: this.FindStartCommands(bot)
@@ -143,11 +169,9 @@ FindStartCommand(bot){
                 </div>
                 {this.FindStartCommand(this.state.bot) !== null &&
                     <div key={this.state.bot.commands[this.FindStartCommand(this.state.bot)].id} className="bot-block">
-                        {console.log(this.state.bot.commands[this.FindStartCommand(this.state.bot)].id)}
-                        {console.log(this.state.bot)}
                         <Message 
                             onChangeBot={this.Change} 
-                            bot={this.state.bot} 
+                            bot={JSON.parse(JSON.stringify(this.state.bot))} 
                             id={this.state.bot.commands[this.FindStartCommand(this.state.bot)].id} 
                             start_block={true} 
                             active_button={this.props.active_button}
@@ -168,7 +192,7 @@ FindStartCommand(bot){
                             <h2 className='text-2'>Начало нового блока</h2>
                             <Message 
                                 onChangeBot={this.Change} 
-                                bot={this.state.bot} 
+                                bot={JSON.parse(JSON.stringify(this.state.bot))} 
                                 id={cmd.id} 
                                 start_block={true} 
                                 active_button={this.props.active_button}
@@ -184,7 +208,7 @@ FindStartCommand(bot){
                             <h2 className='text-2'>Начало нового блока</h2>
                             <Message 
                                 onChangeBot={this.Change} 
-                                bot={this.state.bot} 
+                                bot={JSON.parse(JSON.stringify(this.state.bot))} 
                                 id={cmd.id} 
                                 start_block={true} 
                                 active_button={this.props.active_button}
@@ -214,12 +238,24 @@ FindStartCommand(bot){
                 <a href="#" onClick={() => this.SaveBot()} className='save-button text-2' title='Сохранить'>
                     <img src={saveIcon} alt='Сохранить'/>
                 </a>
-                <a href="#" onClick={() => this.SaveBot()} className='back-arrow text-2' title='Назад'>
-                    <img src={backArrowIcon} alt='Сохранить'/>
-                </a>
-                <a href="#" onClick={() => this.SaveBot()} className='next-arrow text-2' title='Вперёд'>
-                    <img src={nextArrowIcon} alt='Сохранить'/>
-                </a>
+                {this.state.index === 0 ?
+                    <a href="#" className='back-arrow text-2' title='Назад'>
+                        <img src={backArrowIcon} alt='Назад'/>
+                    </a>
+                    :
+                    <a href="#" onClick={() => this.RollBackBot()} className='back-arrow text-2' title='Назад'>
+                        <img src={backArrowActiveIcon} alt='Назад'/>
+                    </a>
+                }
+                {this.state.index === this.state.change_container.length - 1 ?
+                    <a href="#" className='next-arrow text-2' title='Вперёд'>
+                        <img src={nextArrowIcon} alt='Вперёд'/>
+                    </a>
+                    :
+                    <a href="#" onClick={() => this.RollForwardBot()} className='next-arrow text-2' title='Вперёд'>
+                        <img src={nextArrowActiveIcon} alt='Вперёд'/>
+                    </a>
+                }
             </div>
         );
     }

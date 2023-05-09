@@ -28,6 +28,7 @@ class Header extends Component {
     if(this.props.page === "start-page"){
       return(
         <header className='header-start'>
+        {this.state.isOpen = false}
           <img src={logo}/>
           <div className='button-container'>
               <button className='button-log text-2' onClick={() => this.props.onAuthorization()}>
@@ -42,6 +43,7 @@ class Header extends Component {
     }else if (this.props.page === "constructor"){
       return (
         <header className='header'>
+        {this.state.isOpen = false}
           <div style={{display: 'flex', height: '100%', width: 'auto'}}>
             <img src={logo} className='logo'/>
             <img className='prev-page' src={arrowIcon} onClick={() => this.props.onChangePage('bot-list')}/>
@@ -56,20 +58,22 @@ class Header extends Component {
         <div className='button-container'>{/* контейнер с элементами в правой части шапки */}
           <img src={userIcon}  style={{margin: '0px'}} className='userIcon'/>
           <p className='userName text-2'>{this.props.user.name}</p>
-          <button className='buttonList' onClick={this.toggleDropdown}>
+          <button className='buttonList' onClick={() => this.toggleDropdown()}>
             <img src={menuIcon} />
           </button>         
           {this.state.isOpen && (
-            <div className='dropdown-container text-3'>
-              <ul>
-                <li>
-                    <a href="#" onClick={() => this.props.onUserSettings()}>Настройки</a>
-                </li>
-                <li>
-                    <a href='#' onClick={() => this.props.onExit()}>Выход</a>
-                </li>
-                
-              </ul>
+            <div onClick={() => this.setState({isOpen: false})} className='close-list'>
+              <div className='dropdown-container text-3' onClick={e => e.stopPropagation()}>
+                <ul>
+                  <li>
+                      <a href="#" onClick={() => this.props.onUserSettings()}>Настройки</a>
+                  </li>
+                  <li>
+                      <a href='#' onClick={() => this.props.onExit()}>Выход</a>
+                  </li>
+                  
+                </ul>
+              </div>
             </div>
           )}
         
@@ -79,6 +83,7 @@ class Header extends Component {
     }else if (this.props.page === "user-settings"){
       return(
         <header className='header' style={{}}>
+        {this.state.isOpen = false}
         <div style={{display: 'flex', height: '100%', width: 'auto'}}>
           <img src={logo} className='logo'/>
           <img className='prev-page' src={arrowIcon} onClick={() => this.props.onChangePage('bot-list')}/>
@@ -89,6 +94,7 @@ class Header extends Component {
     }else if (this.props.page === "create-bot") {
       return(
         <header className='header' style={{}}>
+        {this.state.isOpen = false}
         <div style={{display: 'flex', height: '100%', width: 'auto'}}>
           <img src={logo} className='logo'/>
           <img className='prev-page' src={arrowIcon} onClick={() => this.props.onChangePage('bot-list')}/>

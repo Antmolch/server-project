@@ -71,11 +71,7 @@ export function Message(props){
     }
 
     const addBlock = () => {
-        if (active_button === "none")
-            console.log("Не выбран блок для добавления")
-        else if (active_button === "mail")
-            console.log("Нельзя добавлять рассылку в это место")
-        else if (active_button === "message"){
+        if (active_button === "message"){
             let guid = bot.id + Guid.newGuid()
             bot.commands[command_index].link.push(guid);
             bot.commands.push({
@@ -90,7 +86,6 @@ export function Message(props){
                 message: "",
                 media: []
             })
-            console.log("работаем")
             onChange(JSON.parse(JSON.stringify(bot)));
         }
         
@@ -178,7 +173,6 @@ export function Message(props){
                 command_call: call
             });
         })
-        console.log(calls)
         return calls
     }
 
@@ -201,8 +195,6 @@ export function Message(props){
         const file = e.target.files[0];
         const base64 = await convertBase64(file);
         let files = media;
-        console.log("e.target")
-        console.log(e.target.files[0])
         files.push({
             name: e.target.files[0].name,
             type: e.target.files[0].type,
@@ -247,7 +239,7 @@ export function Message(props){
                     <div>
                         {/*Имя блока + Удаление блока*/}
                         <p className='text-4'>{bot.message_commands[message_index].name}</p>
-                        <a href="#" title='Удалить' onClick={e => e.stopPropagation()}><a className='delete-block-button' onClick={() => onDeleteBlock()}><img src={exitIcon} alt="close"/></a></a>
+                        <div style={{cursor: 'pointer'}} onClick={e => e.stopPropagation()}><a className='delete-block-button' onClick={() => onDeleteBlock()}><img src={exitIcon} alt="close"/></a></div>
                     </div>
                     
                     <div className='message-text'><p className='text-5-gray'>{bot.message_commands[message_index].message !== "" ? bot.message_commands[message_index].message : "Пустой блок"}</p></div>
@@ -337,7 +329,6 @@ export function Message(props){
                         />
                     
                     <label htmlFor='call'><p style={{marginTop: '0px', marginBottom: '3px'}}>Команды вызова</p></label>
-                        {console.log(call_commands)}
                         {modalActive && call_commands.map((call) => (
                             <div className='call-commands' key={call}>
                                 <CallList call_command={call} onChangeCall={onChangeCall} onDeleteCall={onDeleteCall}/>
@@ -358,7 +349,6 @@ export function Message(props){
                     <div className='error-message text-5'><p style={{color: "red"}}>{new_call_error}</p></div>
 
                     <label htmlFor='file'><p style={{marginTop: '0px', marginBottom: '3px'}}>Файлы</p></label>
-                    {console.log(media)}
                     
                     
                     {modalActive && media.map((obj) => (

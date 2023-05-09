@@ -177,14 +177,7 @@ class App extends React.Component{
             id: '0',
             name: "Приветствие",
             message: "Прошёл целый год, а все вы только похорошели",
-            media: [
-              {
-                id: '1',
-                name: 'base.png',
-                type: 'png',
-                file: ""
-              }
-            ]
+            media: []
           },
           {
             id: '1',
@@ -286,7 +279,6 @@ class App extends React.Component{
         "Authorization": readCookie('Authorization')
       }
     }).then((res) => {
-      console.log(res)
       this.setState({
         isLoaded: false/*,
         bots: res.data*/
@@ -399,7 +391,6 @@ class App extends React.Component{
   
   userAuthorization = (name, token, id) => {
     writeCookie('Authorization', 'Token ' + token, 1);
-    console.log(readCookie('Authorization'));
     this.setState({
       status: "bot-list",
       user: {
@@ -409,7 +400,6 @@ class App extends React.Component{
       }
     })
     this.getBots();
-    console.log(this.state.bots)
   }
 
   ChangeBot = (bot) => {
@@ -521,8 +511,6 @@ class App extends React.Component{
   }
 
   render(){
-    console.log("render")
-    console.log(this.state.bots)
     if (this.state.status === "start-page"){
       return(
         <div className='app'>

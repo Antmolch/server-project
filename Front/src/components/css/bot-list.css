@@ -14,6 +14,7 @@
     justify-content: space-between;
     align-items: center;
     width: 89%;
+    height: auto;
   }
   
   .add-bot-field{
@@ -40,6 +41,7 @@
     justify-content: center;
     align-items: center;
     border: 0px;
+    border-radius: 10px;
     padding: 0px;
   }
   .header-bot-list button img{
@@ -60,7 +62,7 @@
     border: 1px solid #393330;
     text-align: left;
     outline: none;
-    width: 300px
+    width: 230px
   }
 
 .bot-list-field{
@@ -79,4 +81,14 @@
   padding-right: 5%;
   width: 90%;
   
+}
+
+.bot-name-field{
+  padding-top: 10px;
+  margin-right: 5px;
+}
+
+.bot-name-field p{
+  color: red;
+  height: 10px;
 }

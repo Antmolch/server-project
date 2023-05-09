@@ -47,11 +47,7 @@ export function Mail(props){
 
     
     const addBlock = () => {
-        if (active_button === "none")
-            console.log("Не выбран блок для добавления")
-        else if (active_button === "mail")
-            console.log("Нельзя добавлять рассылку в это место")
-        else if (active_button === "message"){
+        if (active_button === "message"){
             let guid = bot.id + Guid.newGuid()
             bot.commands[command_index].link.push(guid);
             bot.commands.push({
@@ -66,7 +62,6 @@ export function Mail(props){
                 message: "",
                 media: []
             })
-            console.log("работаем")
             onChange(JSON.parse(JSON.stringify(bot)));
         }
         
@@ -92,8 +87,9 @@ export function Mail(props){
         if (props.prev_id !== null)
             //удаление ссылки на блок
             bot.commands[bot.commands.findIndex(x => x.id === props.prev_id)].link = bot.commands[bot.commands.findIndex(x => x.id === props.prev_id)].link.filter(x => x !== command_id);
-        bot = deleteBlock(command_id);
+        let bot = deleteBlock(command_id);
         onChange(JSON.parse(JSON.stringify(bot)));
+        console.log(bot)
     }
 
     const changeData = () => {
@@ -137,8 +133,6 @@ export function Mail(props){
         const file = e.target.files[0];
         const base64 = await convertBase64(file);
         let files = media;
-        console.log("e.target")
-        console.log(e.target.files[0])
         files.push({
             name: e.target.files[0].name,
             type: e.target.files[0].type,
@@ -171,9 +165,9 @@ export function Mail(props){
     return(
         <div className='block'>
         <div className="message-block" onClick={() => { setModalActive(true);
-
-                                                        setName(bot.message_commands[message_index].name);
-                                                        setMessage(bot.message_commands[message_index].message);
+                                                        console.log(bot)
+                                                        setName(bot.mail_commands[message_index].name);
+                                                        setMessage(bot.mail_commands[message_index].message);
                                                         setCallDate(bot.mail_commands[message_index].date);
                                                         setMedia(FindMediaCommand(message_index));
                                                         setNewDateError('');
@@ -181,11 +175,11 @@ export function Mail(props){
             <div className="message-field">
                 <div>
                     <p className='text-4'>{bot.mail_commands[message_index].name}</p>
-                    <a href="#" title='Удалить' className='delete-block-button' onClick={() => onDeleteBlock()}><img src={exitIcon}/></a>
+                    <div style={{cursor: 'pointer'}} onClick={e => e.stopPropagation()}><a href="#" title='Удалить' className='delete-block-button' onClick={() => onDeleteBlock()}><img src={exitIcon}/></a></div>
                 </div>
                 <div className='message-text'><p className='text-5-gray'>{bot.mail_commands[message_index].message !== "" ? bot.mail_commands[message_index].message : "Пустой блок"}</p></div>
             </div>
-            <a href="#" title='Добавить' onClick={() => addBlock()} className="add-message-button"><img src={plusIcon} alt="Добавить"/></a>
+            <a href="#" title='Добавить' onClick={e => e.stopPropagation()}  className="add-message-button"><img src={plusIcon} onClick={() => addBlock()} alt="Добавить"/></a>
         </div>
             <div className='inline-bot-block'>
                 {bot.commands[command_index].link.map((id) => (
@@ -288,9 +282,6 @@ export function Mail(props){
                     <div className='error-message text-5'><p style={{color: "red"}}>{new_date_error}</p></div>
 
                     <label htmlFor='file'><p style={{marginTop: '0px', marginBottom: '3px'}}>Файлы</p></label>
-                    {console.log(media)}
-                    
-                    
                     {modalActive && media.map((obj) => (
                         <div key={obj.name}>
                             <FileList onDelete={onDeleteMedia} file={obj.file} name={obj.name} type={obj.type}/>
