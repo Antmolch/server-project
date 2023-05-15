@@ -62,6 +62,7 @@ export function Message(props){
 
 
     const [new_call_error, setNewCallError] = useState('');
+    const [new_media_error, setNewMediaError] = useState('');
 
     const onChange = (bot) => {
         if(start_block)
@@ -159,6 +160,7 @@ export function Message(props){
             bot.message_commands[message_index].media = CreateMediaToChange();
             onChange(bot);
             setNewCallError('')
+            setNewMediaError('')
             setCalls(FindCallCommand(command_index))
         }
         
@@ -193,14 +195,20 @@ export function Message(props){
 
     const uploadImage = async (e) => {
         const file = e.target.files[0];
-        const base64 = await convertBase64(file);
-        let files = media;
-        files.push({
-            name: e.target.files[0].name,
-            type: e.target.files[0].type,
-            file: base64
-        })
-        setMedia([...files])
+        if(file.size > 1048576 * 50){
+            setNewMediaError("Файл не должен превышать размера 50 Мб");
+         }else{
+            setNewMediaError('');
+            const base64 = await convertBase64(file);
+            let files = media;
+            files[0] = {
+                name: e.target.files[0].name,
+                type: e.target.files[0].type,
+                file: base64
+            }
+            console.log(files)
+            setMedia([...files])
+        }
       };
     
       const convertBase64 = (file) => {
@@ -234,6 +242,8 @@ export function Message(props){
                                                             setCalls(FindCallCommand(command_index));
                                                             setMedia(FindMediaCommand(message_index));
                                                             setNewCallError('');
+                                                            setNewCalls('');
+                                                            setNewMediaError('');
                                                             }}>
                 <div className="message-field">
                     <div>
@@ -243,6 +253,7 @@ export function Message(props){
                     </div>
                     
                     <div className='message-text'><p className='text-5-gray'>{bot.message_commands[message_index].message !== "" ? bot.message_commands[message_index].message : "Пустой блок"}</p></div>
+                    {console.log(JSON.stringify(bot.message_commands[message_index].message))}
                 </div>
                 <a href="#" title="Добавить" onClick={e => e.stopPropagation()} className="add-message-button"><img src={plusIcon} alt="Добавить" onClick={() => addBlock()}/></a>
             </div>
@@ -298,12 +309,14 @@ export function Message(props){
                 setActive={setModalActive}>
                 <div className='modal-head'>
                     <p className='text-2'>Сообщение</p> 
-                    <a onClick={() => {
+                    <a href='#' onClick={() => {
                         setName(bot.message_commands[message_index].name);
                         setMessage(bot.message_commands[message_index].message);
                         setCalls(FindCallCommand(command_index));
                         setMedia(FindMediaCommand(message_index));
+                        setNewCalls('');
                         setNewCallError('');
+                        setNewMediaError('');
                         setModalActive(false);
                     }}><img src={exitIcon} alt='Закрыть'/></a>
                 </div>
@@ -356,11 +369,17 @@ export function Message(props){
                             <FileList onDelete={onDeleteMedia} file={obj.file} name={obj.name} type={obj.type}/>
                         </div>
                     ))}
-                    <input 
-                        type='file' 
-                        accept='image/*, video/*, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                        onChange={e => uploadImage(e)}>
-                    </input>
+                    <div className='error-message text-5'><p style={{color: "red"}}>{new_media_error}</p></div>
+                    <div className='file-div'>
+                        <label className='file-input'>
+                            <input 
+                                type='file' 
+                                accept='image/*, video/*, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                onChange={e => uploadImage(e)}>
+                            </input>
+                            <span className='file-span text-3'>Выберите файл</span>
+                        </label>
+                    </div>
                     <button onClick={() => changeData()}>Сохранить</button>
                 </form>
             </Modal>

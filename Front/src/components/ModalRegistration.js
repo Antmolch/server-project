@@ -181,7 +181,7 @@ class ModalRegistration extends Component {
                     value={this.state.confirmPassword}
                     onChange={this.handleInputChange}
                   />
-
+        
                   <p className='text-4' 
                     style={{display: 'flex',width: '340px', height: '15px', margin: '0px', marginBottom: '5px', justifyContent: 'center', alignItems: 'center', color: 'red'}}>
                     {this.state.incor_confPass && 'Заполните поле'}

@@ -44,6 +44,7 @@ export function Mail(props){
 
 
     const [new_date_error, setNewDateError] = useState('');
+    const [new_media_error, setNewMediaError] = useState('');
 
     
     const addBlock = () => {
@@ -93,24 +94,13 @@ export function Mail(props){
     }
 
     const changeData = () => {
-        let save = true;
-
-        //Здесь должна быть проверка времени
-        if (true){
-
-            //это важно
-            setNewDateError('Ошибка');
-            save = false;
-        }
         
-        if (save === true){
-            bot.mail_commands[message_index].name = name;
-            bot.mail_commands[message_index].message = message;
-            bot.mail_commands[message_index].date = call_date;
-            bot.mail_commands[message_index].media = CreateMediaToChange();
-            onChange(bot);
-            setNewDateError('');
-        }
+        bot.mail_commands[message_index].name = name;
+        bot.mail_commands[message_index].message = message;
+        bot.mail_commands[message_index].date = call_date;
+        bot.mail_commands[message_index].media = CreateMediaToChange();
+        onChange(bot);
+        setNewDateError('');
         
     }
     
@@ -131,14 +121,18 @@ export function Mail(props){
 
     const uploadImage = async (e) => {
         const file = e.target.files[0];
-        const base64 = await convertBase64(file);
-        let files = media;
-        files.push({
-            name: e.target.files[0].name,
-            type: e.target.files[0].type,
-            file: base64
-        })
-        setMedia([...files])
+        if(file.size > 1048576 * 50){
+            setNewMediaError("Файл не должен превышать размера 50 Мб");
+        }else{
+            const base64 = await convertBase64(file);
+            let files = media;
+            files[0] = {
+                name: e.target.files[0].name,
+                type: e.target.files[0].type,
+                file: base64
+            }
+            setMedia([...files])
+        }
       };
     
       const convertBase64 = (file) => {
@@ -171,6 +165,7 @@ export function Mail(props){
                                                         setCallDate(bot.mail_commands[message_index].date);
                                                         setMedia(FindMediaCommand(message_index));
                                                         setNewDateError('');
+                                                        setNewMediaError('');
                                                         }}>
             <div className="message-field">
                 <div>
@@ -243,11 +238,12 @@ export function Mail(props){
                 setActive={setModalActive}>
                 <div className='modal-head'>
                     <p className='text-2'>Сообщение</p> 
-                    <a onClick={() => {
+                    <a href='#' onClick={() => {
                         setName(bot.message_commands[message_index].name);
                         setMessage(bot.message_commands[message_index].message);
                         setCallDate(bot.mail_commands[message_index].date);
                         setMedia(FindMediaCommand(message_index));
+                        setNewMediaError('');
                         setModalActive(false);
                     }}><img src={exitIcon} alt='Закрыть'/></a>
                 </div>
@@ -287,11 +283,17 @@ export function Mail(props){
                             <FileList onDelete={onDeleteMedia} file={obj.file} name={obj.name} type={obj.type}/>
                         </div>
                     ))}
-                    <input 
-                        type='file' 
-                        accept='image/*, video/*, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                        onChange={e => uploadImage(e)}>
-                    </input>
+                    <div className='error-message text-5'><p style={{color: "red"}}>{new_media_error}</p></div>
+                    <div className='file-div'>
+                        <label className='file-input'>
+                            <input 
+                                type='file' 
+                                accept='image/*, video/*, application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                onChange={e => uploadImage(e)}>
+                            </input>
+                            <span className='file-span text-3'>Выберите файл</span>
+                        </label>
+                    </div>
                     <button onClick={() => changeData()}>Сохранить</button>
                 </form>
             </Modal>

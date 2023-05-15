@@ -3,6 +3,7 @@ import exitIcon from '../../img/exit.svg'
 import uploadIcon from '../../img/upload.svg'
 import pdfIcon from '../../img/pdf.svg'
 import wordIcon from '../../img/word.svg'
+import videoIcon from '../../img/video-file.svg'
 
 
 function FileList(props){
@@ -26,14 +27,15 @@ function FileList(props){
 
     return(
         <div className="file-field">
-            {console.log(type)}
             <div className="file-info">
-                <p className="text-3">{name}</p>
+                <p className="text-4">{name}</p>
                 {
                     type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ?
                         <img src={wordIcon} alt='icon' className="file"/> :
                     type === "application/pdf" ? 
                         <img src={pdfIcon} alt='icon' className="file"/> :
+                    type === "video/mp4" ? 
+                        <img src={videoIcon} alt='icon' className="file"/> :
                         <img src={file} alt='icon' className="file"/>
                 }
             </div>
