@@ -184,16 +184,18 @@ REST_FRAMEWORK = {
     # ),
 }
 
-#EMAIL_USE_TLS = True
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_HOST_USER = 'Revomaxim5@gmail.com'
-#EMAIL_HOST_PASSWORD = 'xgmxnzswiasffugo'
-#EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'Revomaxim5@gmail.com'
+# EMAIL_HOST_PASSWORD = 'xgmxnzswiasffugo'
+# EMAIL_PORT = 587
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+
+    # 'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'ACTIVATION_URL': 'auth/users/activation/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
         'user_create': 'api.serializers.CustomUserCreateSerializer',

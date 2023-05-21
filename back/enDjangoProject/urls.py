@@ -27,6 +27,9 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
+    # path('auth/users/activation/<str:uid>/<str:token>/', ActivationView.as_view(), name='activate'),
+    # path('auth/users/activation/<str:uid>/<str:token>/', djoser_views.ActivationView.as_view(), name='activate'),
+
     #
     # path('auth/password/reset/', PasswordResetView.as_view(), name='password_reset'),
     # path('auth/password/reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
