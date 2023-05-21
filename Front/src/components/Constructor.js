@@ -14,12 +14,13 @@ import { Guid } from 'js-guid';
 class Constructor extends React.Component{
 constructor(props){
     super(props);
-    this.links_commands = this.FindFollowLinksCommands(props.bot);
+    this.links_commands = this.FindFollowLinksCommands(JSON.parse(JSON.stringify(props.bot)));
     this.state = {
         bot: props.bot,
         start_commands: this.FindStartCommands(props.bot),
         change_container: [JSON.parse(JSON.stringify(props.bot))],
-        index: 0
+        index: 0,
+        bot_name: props.bot.name
     }
 }
 
@@ -110,7 +111,7 @@ addStartBlock = () => {
         bot.commands.push({
             id: guid,
             type: "message",
-            call: [{id: 0, command_call: "/start"}],
+            call: [{id: Guid.newGuid(), command_call: "/start"}],
             link: []
         });
         bot.message_commands.push({
@@ -119,7 +120,6 @@ addStartBlock = () => {
             message: "",
             media: []
         })
-        console.log("работаем")
         this.FixationChange(bot);
         this.setState({
             bot: bot,
@@ -129,17 +129,21 @@ addStartBlock = () => {
 }
 
 SaveBot = () => {
-    this.props.onChangeBot(JSON.parse(JSON.stringify(this.state.bot)))
+    let bot = this.state.bot;
+    bot.name = this.state.bot_name;
+    this.props.onChangeBot(JSON.parse(JSON.stringify(bot)))
 }
 
 FindFollowLinksCommands(bot){
     let commands = [];
-        bot.commands.map((command) => {
-            if (command !== null && command.link !== null)
-                command.link.map((link) => {
-                    !commands.includes(link) && commands.push(link)
-                });
-        });
+    bot.commands.map((command) => {
+        let cmd_index = bot.commands.findIndex(x => x.id === command.id)
+        
+        if (command !== null && bot.commands[cmd_index].link.length !== 0)
+            bot.commands[cmd_index].link.map((link) => {
+                !commands.includes(link) && commands.push(link)
+            });
+    });
         
     return commands;
 }
@@ -151,7 +155,8 @@ FindStartCommands(bot){
 FindStartCommand(bot){
     let index = null;
     bot.commands.map((cmd) => {
-        cmd.call.map((call) => {
+        let cmd_index = bot.commands.findIndex(x => x.id === cmd.id)
+        bot.commands[cmd_index].call.map((call) => {
             if (call.command_call === "/start"){
                 index =  bot.commands.findIndex(x => x.id === cmd.id)
             }
@@ -161,10 +166,13 @@ FindStartCommand(bot){
 }
 
 
+
     render(){
+        
         return(
             <div className="constructor-block">
                 <div className='start-block'>
+                    <input autocomplete="off" className='name-bot-input text-2-gray' value={this.state.bot_name} onChange={e => this.setState({bot_name: e.target.value})}></input>
                     <p className='text-3'>Старт</p>
                 </div>
                 {this.FindStartCommand(this.state.bot) !== null &&

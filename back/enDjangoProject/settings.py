@@ -30,13 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-]
-
-
 
 # Application definition
 
@@ -53,6 +46,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'api',
+    'django_extensions',
+
 
     'djoser',
 #   'django_filters',
@@ -152,6 +147,27 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = [
+'http://localhost:3000',
+]
+
+CORS_ALLOW_HEADERS = [
+'accept',
+'accept-encoding',
+'authorization',
+'content-type',
+'dnt',
+'origin',
+'user-agent',
+'x-csrftoken',
+'x-requested-with',
+'Access-Control-Allow-Headers',
+'Access-Control-Allow-Origin',
+]
+
+
 #Перенаправление
 
 LOGIN_REDIRECT_URL = reverse_lazy('index')
@@ -167,6 +183,12 @@ REST_FRAMEWORK = {
     #     'django_filters.rest_framework.DjangoFilterBackend',
     # ),
 }
+
+#EMAIL_USE_TLS = True
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST_USER = 'Revomaxim5@gmail.com'
+#EMAIL_HOST_PASSWORD = 'xgmxnzswiasffugo'
+#EMAIL_PORT = 587
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
@@ -204,18 +226,3 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
-
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    'Access-Control-Allow-Headers',
-    'Access-Control-Allow-Origin',
-]

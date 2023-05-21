@@ -6,7 +6,7 @@ import { useDetectOutsideClick } from "./UseDetectOutsideClick";
 
 export function Bot(props){
     const bot = props.bot;
-    const [statusBot, setStatusBot] = useState(bot.status);
+    const [statusBot, setStatusBot] = useState(bot.launch_status);
     const number = props.number;
     const [isActive, setIsActive] = useState(false);
 
@@ -22,7 +22,7 @@ export function Bot(props){
             </a>
             
             <div className="folowers-bot">
-                <p className="text-3">{bot.chats.length}</p>
+                <p className="text-3">{bot.chat.length}</p>
                 <p className="text-4">Подписчики</p>
             </div>
             <div className='status-bot'><p className="text-3" id="bot-status">{statusBot === false ? "Остановлен" : "Подключён"}</p></div>

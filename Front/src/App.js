@@ -224,7 +224,7 @@ class App extends React.Component{
         chats: [
           {
             id: '0',
-            name: "@Antmolch",
+            chat_id: "@Antmolch",
           },
           {
             id: '1',
@@ -254,11 +254,7 @@ class App extends React.Component{
             }]
         }],
       active_func_button: "none",
-      user: {
-        name: '',
-        email: '',
-        id: ''
-      },
+      user: this.autoAuthorization(),
       bot_name: '',
       isLoaded: false,
       error: ''
@@ -266,6 +262,94 @@ class App extends React.Component{
     this.onChangeBot = this.onChangeBot.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onDeleteBot = this.onDeleteBot.bind(this);
+  }
+
+  autoAuthorization = () => {
+    let user = {}
+    axios({
+      method: 'get',
+      url: 'http://127.0.0.1:8000/api/getuser',
+      headers: {
+        "Authorization": readCookie('Authorization')
+      }
+    }).then((res) => {
+      writeCookie('Authorization', readCookie('Authorization'), 1);
+      user.name = res.data.username
+      user.email = res.data.email
+      this.setState({
+        status: "bot-list"
+      })
+      this.getBots();
+    }).catch(err => {
+      writeCookie('Authorization', readCookie('Authorization'), 0.000000001);
+      user = {
+        name: '',
+        email: ''
+      }
+      this.setState({
+        status: "start-page"
+      })
+    })
+    console.log(user)
+    return user
+  }
+
+  
+
+  parseBots = (bots) => {
+    if (bots.length > 0){
+      let index = 0;
+      console.log(JSON.parse(JSON.stringify(bots)))
+      
+      bots.map((bot) => {
+        bots[index].message_commands = []
+        bots[index].mail_commands = []
+        let cmd_index = 0
+
+        bot.commands.map((cmd) => {
+          if (cmd.message_commands.length !== 0){
+            cmd.message_commands[0].id = cmd.message_commands[0].command_id;
+            cmd.message_commands[0].media = cmd.media
+            cmd.message_commands[0].name = cmd.name
+            cmd.message_commands.message = cmd.message_commands[0].message
+            delete cmd.message_commands[0].command_id;
+            bots[index].message_commands.push(cmd.message_commands[0])
+          }else if (cmd.mail_commands.length !== 0){
+            cmd.mail_commands[0].id = cmd.mail_commands[0].command_id;
+            cmd.mail_commands[0].media = cmd.media
+            cmd.mail_commands[0].name = cmd.name
+            delete cmd.mail_commands[0].command_id;
+            bots[index].mail_commands.push(cmd.mail_commands[0])
+          }
+
+          bots[index].commands[cmd_index].link = [];
+          bots[index].commands[cmd_index].call = [];
+          cmd.calls.map((call) => {
+            bots[index].commands[cmd_index].call.push({
+              id: call.id,
+              command_call: call.name
+            });
+          })
+
+          cmd.links.map((link) => {
+            link.follow.map((follow) => {
+              bots[index].commands[cmd_index].link.push(follow);
+            })
+          })
+
+          
+          if (cmd.type_id === "fe67b9ae-95ce-44e4-97db-915a02195191"){
+            bots[index].commands[cmd_index].type = 'message'
+          }else{
+            bots[index].commands[cmd_index].type = 'mail'
+          }
+          cmd_index++;
+        })
+        index++;
+      })
+    }
+    console.log(bots)
+    return bots
   }
 
   getBots = () => {
@@ -280,8 +364,8 @@ class App extends React.Component{
       }
     }).then((res) => {
       this.setState({
-        isLoaded: false/*,
-        bots: res.data*/
+        isLoaded: false,
+        bots: JSON.parse(JSON.stringify(this.parseBots(res.data)))
       })
     })
     .catch(err => {
@@ -391,100 +475,196 @@ class App extends React.Component{
   
   userAuthorization = (name, token, id) => {
     writeCookie('Authorization', 'Token ' + token, 1);
-    this.setState({
-      status: "bot-list",
-      user: {
-        name: name,
-        email: '',
-        id: id
-      }
-    })
-    this.getBots();
+    this.autoAuthorization();
   }
 
-  ChangeBot = (bot) => {
-    let bots = this.state.bots;
-    let bot_index = bots.findIndex(x => x.id === bot.id);
+  parseChangeBot = () => {
+    
+  }
 
-    let updateCommands = {
-      commands: [],
-      message_commands: [],
-      mail_commands: []
-    }
-
-    let deleteCommands = {
-      commands: [],
-      message_commands: [],
-      mail_commands: []
-    }
-
-    let addCommands = {
-      commands: [],
-      message_commands: [],
-      mail_commands: []
-    }
-
-    /*Проверка изменений в объекте commands*/
-    //Проверка на изменение команды или её добавление
-    bot.commands.map((curr_cmd) => {
-      let command_index = bots[bot_index].commands.findIndex(x => x.id === curr_cmd.id)
-      if (command_index === -1){
-        addCommands.commands.push(curr_cmd)
-      }else if (bots[bot_index].commands[bots[bot_index].commands.findIndex(x => x.id === curr_cmd.id)] !== curr_cmd){
-        updateCommands.commands.push(curr_cmd)
+  ChangeBot = (bot1) => {
+    let bot = bot1;
+    this.setState({isLoaded: true})
+    console.log(bot)
+    axios({
+      method: 'delete',
+      url: 'http://127.0.0.1:8000/api/bot/' + bot.id,
+      headers: {
+        "Authorization": readCookie('Authorization')
       }
-    })
-
-    //Проверка на удаление комманды
-    bots[bot_index].commands.map((prev_cmd) => {
-      let command_index = bot.commands.findIndex(x => x.id === prev_cmd.id).length
-      if (command_index === -1)
-        deleteCommands.commands.push(prev_cmd)
-    })
-
-    /*Проверка изменений в объекте mwssage_commands*/
-    //Проверка на изменение команды или её добавление
-    bot.message_commands.map((curr_cmd) => {
-      let command_index = bots[bot_index].message_commands.findIndex(x => x.id === curr_cmd.id)
-      if (command_index === -1){
-        addCommands.message_commands.push(curr_cmd)
-      }else if (bots[bot_index].message_commands[command_index] !== curr_cmd){
-        updateCommands.message_commands.push(curr_cmd)
-      }
-    })
-
-    //Проверка на удаление комманды
-    bots[bot_index].message_commands.map((prev_cmd) => {
-      let command_index = bot.message_commands.findIndex(x => x.id === prev_cmd.id)
-      if (command_index === -1)
-        deleteCommands.message_commands.push(prev_cmd)
-    })
-
-    /*Проверка изменений в объекте mail_commands*/
-    //Проверка на изменение команды или её добавление
-    bot.mail_commands.map((curr_cmd) => {
-      let command_index = bots[bot_index].mail_commands.findIndex(x => x.id === curr_cmd.id)
-      if (command_index === -1){
-        addCommands.mail_commands.push(curr_cmd)
-      }else if (bots[bot_index].mail_commands[command_index] !== curr_cmd){
-        updateCommands.mail_commands.push(curr_cmd)
-      }
-    })
-
-    //Проверка на удаление комманды
-    bots[bot_index].mail_commands.map((prev_cmd) => {
-      let command_index = bot.mail_commands.findIndex(x => x.id === prev_cmd.id)
-      if (command_index === -1)
-        deleteCommands.mail_commands.push(prev_cmd)
-    })
-
-    this.sendBots(bot.id, updateCommands, deleteCommands, addCommands);
-    this.getBots();
-    bots[bot_index] = bot;
-    this.setState({
-      bots: bots
+    }).then((res) => {
+      axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8000/api/bot/create',
+        data: {
+          unique_name: bot.unique_name,
+          name: bot.name,
+          token: bot.token,
+          url: bot.url,
+          launch_status: bot.launch_status
+        },
+        headers: {
+          "Authorization": readCookie('Authorization')
+        }
+      }).then((resu) => {
+        bot.id = resu.data.id
+        
+        bot.commands.map((cmd) => {
+          let cmd_index = bot.commands.findIndex(x => x.id === cmd.id);
+          axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/command/create',
+            data: {
+              name: cmd.type === "message" ? 
+                    (bot.message_commands[bot.message_commands.findIndex(x => x.id === cmd.id)].name === "" ? "Без название" : bot.message_commands[bot.message_commands.findIndex(x => x.id === cmd.id)].name) 
+                    :
+                    (bot.mail_commands[bot.mail_commands.findIndex(x => x.id === cmd.id)].name === "" ? "Без название" : bot.mail_commands[bot.mail_commands.findIndex(x => x.id === cmd.id)].name),
+              link_status: false,
+              bot_id: resu.data.id,
+              type_id: cmd.type === 'message' ? 'fe67b9ae-95ce-44e4-97db-915a02195191' : 'e01331d0-8c74-4cc6-a2d3-a6bd0a06a409'
+            },
+            headers: {
+              "Authorization": readCookie('Authorization')
+            }
+          }).then((resс) => {
+            bot.commands.map((cmd_in) => {
+              let cmd_in_index = bot.commands.findIndex(x => x.id === cmd_in.id);
+              cmd_in.link.map((link) => {
+                let link_index = bot.commands[cmd_in_index].link.findIndex(x => x === link);
+                if(link === cmd.id)
+                  bot.commands[cmd_in_index].link[link_index] = resс.data.id;
+              })
+            })
+    
+            bot.message_commands.map((msg_cmd) => {
+              let msg_cmd_index = bot.message_commands.findIndex(x => x.id === msg_cmd.id)
+              if (msg_cmd.id === cmd.id){
+                bot.message_commands[msg_cmd_index].id = resс.data.id;
+                axios({
+                  method: 'post',
+                  url: 'http://127.0.0.1:8000/api/messageCommand/create',
+                  data: {
+                    message: msg_cmd.message === '' ? "Пусто" : msg_cmd.message,
+                    command_id: resс.data.id
+                  },
+                  headers: {
+                    "Authorization": readCookie('Authorization')
+                  }
+                })
+                if (msg_cmd.media.length !== 0) 
+                  axios({
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/media/create',
+                    data: {
+                      command_id: resс.data.id,
+                      name: msg_cmd.media[0].name,
+                      type: msg_cmd.media[0].type,
+                      file: msg_cmd.media[0].file
+                    },
+                    headers: {
+                      "Authorization": readCookie('Authorization')
+                    }
+                  })
+              }
+            })
+    
+            bot.mail_commands.map((ml_cmd) => {
+              let ml_cmd_index = bot.mail_commands.findIndex(x => x.id === ml_cmd.id)
+              if (ml_cmd.id === cmd.id){
+                bot.mail_commands[ml_cmd_index].id = resс.data.id;
+                axios({
+                  method: 'post',
+                  url: 'http://127.0.0.1:8000/api/mailCommand/create',
+                  data: {
+                    message: ml_cmd.message === '' ? 'Без имени' : ml_cmd.message,
+                    command_id: resс.data.id,
+                    datetime: ml_cmd.data === undefined ? "2020-05-05T00:00:00Z" : ml_cmd.data + ':00Z'
+                  },
+                  headers: {
+                    "Authorization": readCookie('Authorization')
+                  }
+                })
+                if (ml_cmd.media.length !== 0) 
+                  axios({
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/media/create',
+                    data: {
+                      command_id: resс.data.id,
+                      name: ml_cmd.media[0].name,
+                      type: ml_cmd.media[0].type,
+                      file: ml_cmd.media[0].file
+                    },
+                    headers: {
+                      "Authorization": readCookie('Authorization')
+                    }
+                  })
+              }
+            })
+    
+            bot.commands[bot.commands.findIndex(x => x.id === cmd.id)].id = resс.data.id;
+          })
+        })
+        setTimeout(() => {
+          bot.commands.map((cmd) => {
+            let cmd_index = bot.commands.findIndex(x => x.id === cmd.id);
+            if (cmd.link.length !== 0)
+              axios({
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/link/create',
+                data: {
+                  current: cmd.id,
+                  follow: cmd.link
+                },
+                headers: {
+                  "Authorization": readCookie('Authorization')
+                }
+              })
+            cmd.call.map((call) => {
+              axios({
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/command/call/create',
+                data: {
+                  command_id: cmd.id,
+                  name: call.command_call
+                },
+                headers: {
+                  "Authorization": readCookie('Authorization')
+                }
+              })
+            })
+            
+          })
+      
+          bot.chat.map((chat) => {
+            axios({
+              method: 'post',
+              url: 'http://127.0.0.1:8000/api/botChat/create',
+              data: {
+                bot_id: bot.id,
+                chat_id: chat.chat_id
+              },
+              headers: {
+                "Authorization": readCookie('Authorization')
+              }
+            })
+          })
+        }, 1000);
+        setTimeout(() => {
+          this.setState({
+            id: JSON.parse(JSON.stringify(bot.id)),
+            isLoaded: false
+          })
+          this.getBots();
+          console.log("----")
+          console.log(bot.id)
+          console.log(this.state.id)
+          
+          console.log(this.state.id)
+        }, 2000);
+      })
     })
   }
+  
 
   ChangePage = (page) => {
     this.setState({
@@ -499,10 +679,10 @@ class App extends React.Component{
     })
   }
 
-  onCreateBot = (bots) => {
+  onCreateBot = () => {
+    this.getBots();
     this.setState({
-      status: 'bot-list',
-      bots: bots
+      status: 'bot-list'
     })
   }
 

@@ -27,4 +27,9 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
+    #
+    # path('auth/password/reset/', PasswordResetView.as_view(), name='password_reset'),
+    # path('auth/password/reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # path('auth/password/set/', SetPasswordView.as_view(), name='password_set'),
+
 ]

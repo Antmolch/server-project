@@ -37,6 +37,7 @@ export function Mail(props){
         })
         return medias;
     }
+    
     const [name, setName] = useState(bot.mail_commands[message_index].name);
     const [message, setMessage] = useState(bot.mail_commands[message_index].message);
     const [call_date, setCallDate] = useState(bot.mail_commands[message_index].date);
@@ -238,7 +239,7 @@ export function Mail(props){
                 setActive={setModalActive}>
                 <div className='modal-head'>
                     <p className='text-2'>Сообщение</p> 
-                    <a href='#' onClick={() => {
+                    <a href='#' style={{paddingRight: '20px'}} onClick={() => {
                         setName(bot.message_commands[message_index].name);
                         setMessage(bot.message_commands[message_index].message);
                         setCallDate(bot.mail_commands[message_index].date);
@@ -247,7 +248,7 @@ export function Mail(props){
                         setModalActive(false);
                     }}><img src={exitIcon} alt='Закрыть'/></a>
                 </div>
-                <hr/>
+                <hr style={{width: 'calc(100% - 20px)'}}/>
                 <form className='modal-form text-3'>
                     <label htmlFor='name'>Название рассылки</label>
                     <input 
@@ -257,6 +258,7 @@ export function Mail(props){
                         placeholder='Введите название рассылки' 
                         onChange={e => {setName(e.target.value)}}
                         value={name}
+                        autocomplete="off"
                         />
                     <label htmlFor='message'>Сообщение</label>
                     <textarea 
@@ -266,6 +268,7 @@ export function Mail(props){
                         placeholder='Введите сообщение' 
                         onChange={e => setMessage(e.target.value)}
                         value={message}
+                        autocomplete="off"
                         />
                     
                     <label htmlFor='date'><p style={{marginTop: '0px', marginBottom: '3px'}}>Дата и время рассылки</p></label>
@@ -274,6 +277,7 @@ export function Mail(props){
                             id='date' 
                             value={call_date}
                             onChange={e => setCallDate(e.target.value)}
+                            autocomplete="off"
                         />
                     <div className='error-message text-5'><p style={{color: "red"}}>{new_date_error}</p></div>
 

@@ -61,8 +61,11 @@ class BotList extends React.Component{
                     <div className='header-bot-list'>
                         <p className='text-2'>Ваши чат-боты</p>
                         <div className='add-bot-field'>
-                            <input className='text-3' type='text' placeholder='Введите название чат-бота'/>
-                            <button>
+                        <div className='bot-name-field'>
+                            <input className='text-3' type='text' placeholder='Введите название чат-бота' value={this.state.bot_name} onChange={e => this.setState({bot_name: e.target.value})}/>
+                            <p className='error-name-newbot text-4'>{this.state.error}</p>
+                        </div>
+                            <button className="add-bot-button" onClick={() => this.newBot()}>
                                 <img src={plusIcon} alt='Действия'/>
                                 <p className="text-3">Создать бота</p>
                             </button>

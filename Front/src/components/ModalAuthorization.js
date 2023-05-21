@@ -108,6 +108,7 @@ class ModalAuthorization extends Component {
                     className='label'
                     value={this.state.name}
                     onChange={this.handleInputChange}
+                    autocomplete="off"
                   />
                 
                 <p className='text-4' 
@@ -122,6 +123,7 @@ class ModalAuthorization extends Component {
                     className='label'
                     value={this.state.password}
                     onChange={this.handleInputChange}
+                    autocomplete="off"
                   />
                 {/* <button onClick={ ()=> this.props.onOpenModal()}>sfvd</button> */}
                 <p className='text-4' 

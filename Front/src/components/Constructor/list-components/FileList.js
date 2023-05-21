@@ -38,6 +38,8 @@ function FileList(props){
                         <img src={videoIcon} alt='icon' className="file"/> :
                         <img src={file} alt='icon' className="file"/>
                 }
+                {console.log(type)}
+                {console.log(file)}
             </div>
             <div className="file-buttons">
                 <img src={uploadIcon} onClick={() => onLoad(file)} className="file-upload" alt='Скачать'/>

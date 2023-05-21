@@ -6,6 +6,10 @@ import menuIcon from './img/Menu.svg'
 import './css/steps-to-connect.css'
 import axios from 'axios'
 
+
+import writeCookie from '../Session/WriteCookie';
+import readCookie from '../Session/readCookie';
+
 class StepsToConnect extends Component {
   constructor(props){
     super(props);
@@ -36,20 +40,23 @@ class StepsToConnect extends Component {
         this.setState({isLoaded: true});
         axios({
             method: 'post',
-            url: 'http://127.0.0.1:8000/api/new_bot',
+            url: 'http://127.0.0.1:8000/api/bot/create',
             data: {
-                email: this.state.email,
-                name: this.state.bot_name,
                 unique_name: this.state.bot_unique_name,
-                token: this.state.bot_token
+                token: this.state.bot_token,
+                name: this.state.bot_name,
+                url: 0,
+                launch_status: 0
+            },
+            headers: {
+              "Authorization": readCookie('Authorization')
             }
         }).then((res) => {
             this.setState({
                 isLoaded: false
             })
-            this.props.onCreate(res.data)
-        })
-            .catch(err => {
+            this.props.onCreate()
+        }).catch(err => {
             this.deleteError()
             this.setState({
                 isLoaded: false,
